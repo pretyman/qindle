@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="margin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QStackedWidget" name="stackedWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="page_1">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QTreeView" name="treeView">
+          <property name="contextMenuPolicy">
+           <enum>Qt::ActionsContextMenu</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_2">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QListView" name="listView"/>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>600</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <addaction name="action_File_Manager"/>
+    <addaction name="action_Program_Manager"/>
+    <addaction name="action_Setting"/>
+    <addaction name="action_Quit"/>
+   </widget>
+   <addaction name="menuFile"/>
+  </widget>
+  <action name="action_Quit">
+   <property name="text">
+    <string>&amp;Quit</string>
+   </property>
+  </action>
+  <action name="action_File_Manager">
+   <property name="text">
+    <string>&amp;File Manager</string>
+   </property>
+  </action>
+  <action name="action_Program_Manager">
+   <property name="text">
+    <string>&amp;Program Manager</string>
+   </property>
+  </action>
+  <action name="action_Setting">
+   <property name="text">
+    <string>&amp;Setting</string>
+   </property>
+  </action>
+  <action name="action_Open">
+   <property name="text">
+    <string>&amp;Open</string>
+   </property>
+  </action>
+  <action name="actionOpen_With">
+   <property name="text">
+    <string>Open &amp;With</string>
+   </property>
+  </action>
+  <action name="action_Cut">
+   <property name="text">
+    <string>&amp;Cut</string>
+   </property>
+  </action>
+  <action name="action_Copy">
+   <property name="text">
+    <string>C&amp;opy</string>
+   </property>
+  </action>
+  <action name="action_Paste">
+   <property name="text">
+    <string>&amp;Paste</string>
+   </property>
+  </action>
+  <action name="action_Delete">
+   <property name="text">
+    <string>&amp;Delete</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>action_Quit</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>299</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
