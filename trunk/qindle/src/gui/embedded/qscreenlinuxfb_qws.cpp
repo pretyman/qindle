@@ -1,4 +1,3 @@
-//Modified by Li-Miao <lm3783@gmail.com> 2009
 /****************************************************************************
 **
 ** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
