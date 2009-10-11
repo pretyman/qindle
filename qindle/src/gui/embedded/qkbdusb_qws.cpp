@@ -1,4 +1,3 @@
-//Modified by Li-Miao <lm3783@gmail.com> 2009
 /****************************************************************************
 **
 ** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
@@ -154,8 +153,8 @@ void QWSUsbKbPrivate::getMouseEvent()
 
 void QWSUsbKbPrivate::readKeyboardData(input_event event)
 {
-
-    qWarning("keypressed: code=%03d (%s)\n",event.code,((event.value)!=0) ? "Down":"Up");
+    if (!(event.value))
+        qWarning("keypressed: code=%03d (%s)\n",event.code,((event.value)!=0) ? "Down":"Up");
 
 #ifdef QT_QWS_ZYLONITE
     int modifiers=0;
@@ -403,34 +402,35 @@ void QWSUsbKbPrivate::readKeyboardData(input_event event)
     // For Kindle DX
     if(key==115) {
         handler->processKeyEvent(0, Qt::Key_Backtab, 0, event.value!=0, false);
+        return;
     } else if(key==114) {
-        handler->processKeyEvent(0, Qt::Key_Tab, 0, event.value!=0, false );
+        key=15;
     } else if(key==98) {
-        handler->processKeyEvent(0, Qt::Key_Home, 0, event.value!=0, false);
+        key=102;
     } else if(key==109) {
-        handler->processKeyEvent(0, Qt::Key_PageUp, 0, event.value!=0, false);
+        key=104;
     } else if(key==124) {
-        handler->processKeyEvent(0, Qt::Key_PageDown, 0, event.value!=0, false);
+        key=109;
     } else if(key==139) {
         handler->processKeyEvent(0, Qt::Key_Menu, 0, event.value!=0, false);
+        return;
     } else if(key==91) {
-        handler->processKeyEvent(0, Qt::Key_Escape, 0, event.value!=0, false);
+        key=1;
     } else if(key==90) {
-        handler->processKeyEvent(0, Qt::Key_Control, 0, event.value!=0, false);
+        key=29;
     } else if(key==94) {
-        handler->processKeyEvent(0, Qt::Key_ScrollLock, 0, event.value!=0, false);
+        key=70;
     } else if(key==0x7a) {
-        handler->processKeyEvent(0, Qt::Key_Up, 0, event.value!=0, false);
+        key=103;
     } else if(key==0x7b) {
-        handler->processKeyEvent(0, Qt::Key_Down, 0, event.value!=0, false);
+        key=108;
     } else if(key==0x5c) {
-        handler->processKeyEvent(0, Qt::Key_Select, 0, event.value!=0, false);
-    } else {
-        if(event.value == 0) {
-            key=key | 0x80;
-        }
-        handler->doKey(key);
+        key=96;
     }
+    if(event.value == 0) {
+        key=key | 0x80;
+    }
+    handler->doKey(key);
 #endif
 }
 
