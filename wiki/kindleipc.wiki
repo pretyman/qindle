@@ -18,11 +18,11 @@ lipc包括一系列的以lipc开头的程序：
  * ...
 
 lipc对外采用纯文本接口，格式如下：
-
+{{{
 <family name> <property> <value>
 <family name> <function> <arg>
 <family name> <event>
-
+}}}
 因kindle中大量使用shell脚本，这种形式方便脚本调用。
 
 除消息传递外，lipc还提供一些服务，包括：
