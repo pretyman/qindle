@@ -23,8 +23,13 @@ private:
     Ui::MainWindow *ui;
     QDirModel *model;
     QPoint MousePos;
+    QModelIndex clipindex;
+    int tempindex;
 
 private slots:
+    void on_action_Paste_triggered();
+    void on_action_Copy_triggered();
+    void on_action_Delete_triggered();
     void on_treeView_activated(QModelIndex index);
     void on_action_Open_triggered();
     void on_listView_activated(QModelIndex index);

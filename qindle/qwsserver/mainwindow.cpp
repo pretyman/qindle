@@ -28,6 +28,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_action_File_Manager_triggered()
 {
     ui->treeView->setModel(model);
+    ui->treeView->setRootIndex(model->index("/"));
     ui->stackedWidget->setCurrentIndex(0);
     ui->treeView->setFocus();
 }
@@ -68,6 +69,9 @@ void MainWindow::on_action_Open_triggered()
 
 void MainWindow::on_treeView_activated(QModelIndex index)
 {
+    if (model->isDir(index)) {
+        ui->treeView->expand(index);
+    } else {
     QString program = "/usr/local/bin/textedit";
     QStringList arguments;
     arguments << model->filePath(index);
@@ -76,4 +80,55 @@ void MainWindow::on_treeView_activated(QModelIndex index)
     msgBox.exec();
     QProcess *myProcess = new QProcess(this);
     myProcess->start(program, arguments);
+    }
+}
+
+void MainWindow::on_action_Delete_triggered()
+{
+    QModelIndex index=ui->treeView->selectionModel()->currentIndex();
+    QMessageBox msgBox;
+    if (model->isDir(index)) {
+        //msgBox.setText(tr("Cannot delete a directory!"));
+        //msgBox.exec();
+        bool retcode=model->fileInfo(index).absoluteDir().rmdir(model->filePath(index));
+        if (!retcode) {
+            msgBox.setText(tr("Cannot remove this file!"));
+            msgBox.setStandardButtons(QMessageBox::Ok);
+            msgBox.exec();
+        }
+    } else {
+        msgBox.setText(tr("Do you really want to delete ") + model->fileName(index));
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        int ret=msgBox.exec();
+        if (ret==QMessageBox::Yes) {
+            bool retcode=model->fileInfo(index).absoluteDir().remove(model->fileName(index));
+            if (!retcode) {
+                msgBox.setText(tr("Cannot remove this file!"));
+                msgBox.setStandardButtons(QMessageBox::Ok);
+                msgBox.exec();
+            }
+        }
+    }
+}
+
+void MainWindow::on_action_Copy_triggered()
+{
+    QModelIndex index=ui->treeView->selectionModel()->currentIndex();
+    QMessageBox msgBox;
+    if (model->isDir(index)) {
+        msgBox.setText(tr("Cannot copy a directory!"));
+        msgBox.exec();
+    } else {
+        clipindex=index;
+        tempindex=2;
+    }
+}
+
+void MainWindow::on_action_Paste_triggered()
+{
+
+    QModelIndex index=ui->treeView->selectionModel()->currentIndex();
+    bool ret=QFile::copy(model->filePath(clipindex),(model->fileInfo(index).absolutePath() + model->fileName(clipindex)));
+    qWarning("%d",ret);
+
 }
