@@ -5,6 +5,10 @@ QT += sql
 TARGET = qwsserver
 TEMPLATE = app
 SOURCES += main.cpp \
-    mainwindow.cpp
-HEADERS += mainwindow.h
+    mainwindow.cpp \
+    fileutil.cpp \
+    programdb.cpp
+HEADERS += mainwindow.h \
+    fileutil.h \
+    programdb.h
 FORMS += mainwindow.ui
