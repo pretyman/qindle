@@ -38,35 +38,28 @@
  </data>
  <data>
   <variable>activebuildconfiguration</variable>
-  <value type="QString" >Debug</value>
- </data>
- <data>
-  <variable>buildConfiguration-Debug</variable>
-  <valuemap type="QVariantMap" >
-   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Debug</value>
-   <value key="QtVersionId" type="int" >0</value>
-   <value key="addQDumper" type="" ></value>
-  </valuemap>
+  <value type="QString" >Release</value>
  </data>
  <data>
   <variable>buildConfiguration-Release</variable>
   <valuemap type="QVariantMap" >
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Release</value>
-   <value key="QtVersionId" type="int" >0</value>
+   <value key="QtVersionId" type="int" >2</value>
    <value key="addQDumper" type="" ></value>
   </valuemap>
  </data>
  <data>
-  <variable>buildconfiguration-Debug-buildstep0</variable>
+  <variable>buildconfiguration-Release-buildstep0</variable>
   <valuemap type="QVariantMap" >
-   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Debug</value>
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Release</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList" >
     <value type="QString" >CONFIG_PROTECT_MASK=/etc/sandbox.d /etc/env.d/java/ /etc/udev/rules.d /etc/fonts/fonts.conf /etc/gconf /etc/terminfo /etc/ca-certificates.conf /etc/revdep-rebuild</value>
     <value type="QString" >CVS_RSH=ssh</value>
-    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-gTrAlNDOsF,guid=da26573489dc1249d2a5d1174ad53228</value>
+    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-tXGEhOEJEN,guid=2eeda91bf6b0e553758d79144b147237</value>
     <value type="QString" >DESKTOP_STARTUP_ID=</value>
     <value type="QString" >DISPLAY=:0.0</value>
     <value type="QString" >EDITOR=/bin/nano</value>
+    <value type="QString" >EMBOSS_ACDROOT=/usr/share/EMBOSS/acd</value>
     <value type="QString" >FLTK_DOCDIR=/usr/share/doc/fltk-1.1.9/html</value>
     <value type="QString" >GCC_SPECS=</value>
     <value type="QString" >GDK_USE_XFT=1</value>
@@ -92,14 +85,15 @@
     <value type="QString" >OPENGL_PROFILE=nvidia</value>
     <value type="QString" >PAGER=/usr/bin/less</value>
     <value type="QString" >PATH=/usr/bin:/usr/local/bin:/usr/bin:/bin:/opt/bin:/usr/i686-pc-linux-gnu/gcc-bin/4.3.2:/usr/local/texlive/2008/bin/i386-linux</value>
+    <value type="QString" >PLPLOT_LIB=/usr/share/EMBOSS/</value>
     <value type="QString" >PWD=/home/nemo</value>
     <value type="QString" >QTDIR=/usr</value>
     <value type="QString" >QT_IM_MODULE=xim</value>
-    <value type="QString" >SESSION_MANAGER=local/Nautilus:@/tmp/.ICE-unix/4622,unix/Nautilus:/tmp/.ICE-unix/4622</value>
+    <value type="QString" >SESSION_MANAGER=local/Nautilus:@/tmp/.ICE-unix/8179,unix/Nautilus:/tmp/.ICE-unix/8179</value>
     <value type="QString" >SHELL=/bin/bash</value>
     <value type="QString" >SHLVL=4</value>
-    <value type="QString" >SSH_AGENT_PID=4608</value>
-    <value type="QString" >SSH_AUTH_SOCK=/tmp/ssh-jklcEv4597/agent.4597</value>
+    <value type="QString" >SSH_AGENT_PID=8037</value>
+    <value type="QString" >SSH_AUTH_SOCK=/tmp/ssh-npMccB8019/agent.8019</value>
     <value type="QString" >TERM=linux</value>
     <value type="QString" >USER=nemo</value>
     <value type="QString" >WINDOWPATH=7</value>
@@ -110,29 +104,29 @@
     <value type="QString" >_=/usr/bin/xfce4-session</value>
    </valuelist>
    <valuelist key="abstractProcess.arguments" type="QVariantList" >
-    <value type="QString" >/mnt/win/temp/installer/qindle/qindle/qwsserver/qwsserver.pro</value>
+    <value type="QString" >/mnt/win/project/kindle/qindle/qindle/qwsserver/qwsserver.pro</value>
     <value type="QString" >-spec</value>
     <value type="QString" >/usr/share/qt4/mkspecs/linux-g++</value>
     <value type="QString" >-r</value>
-    <value type="QString" >CONFIG+=debug</value>
    </valuelist>
    <value key="abstractProcess.command" type="QString" >/usr/bin/qmake</value>
    <value key="abstractProcess.enabled" type="bool" >false</value>
-   <value key="abstractProcess.workingDirectory" type="QString" >/mnt/win/temp/installer/qindle/qindle/qwsserver</value>
-   <value key="buildConfiguration" type="int" >2</value>
+   <value key="abstractProcess.workingDirectory" type="QString" >/mnt/win/project/kindle/qindle/qindle/qwsserver</value>
+   <value key="buildConfiguration" type="int" >0</value>
   </valuemap>
  </data>
  <data>
-  <variable>buildconfiguration-Debug-buildstep1</variable>
+  <variable>buildconfiguration-Release-buildstep1</variable>
   <valuemap type="QVariantMap" >
-   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Debug</value>
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Release</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList" >
     <value type="QString" >CONFIG_PROTECT_MASK=/etc/sandbox.d /etc/env.d/java/ /etc/udev/rules.d /etc/fonts/fonts.conf /etc/gconf /etc/terminfo /etc/ca-certificates.conf /etc/revdep-rebuild</value>
     <value type="QString" >CVS_RSH=ssh</value>
-    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-gTrAlNDOsF,guid=da26573489dc1249d2a5d1174ad53228</value>
+    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-tXGEhOEJEN,guid=2eeda91bf6b0e553758d79144b147237</value>
     <value type="QString" >DESKTOP_STARTUP_ID=</value>
     <value type="QString" >DISPLAY=:0.0</value>
     <value type="QString" >EDITOR=/bin/nano</value>
+    <value type="QString" >EMBOSS_ACDROOT=/usr/share/EMBOSS/acd</value>
     <value type="QString" >FLTK_DOCDIR=/usr/share/doc/fltk-1.1.9/html</value>
     <value type="QString" >GCC_SPECS=</value>
     <value type="QString" >GDK_USE_XFT=1</value>
@@ -158,14 +152,15 @@
     <value type="QString" >OPENGL_PROFILE=nvidia</value>
     <value type="QString" >PAGER=/usr/bin/less</value>
     <value type="QString" >PATH=/usr/bin:/usr/local/bin:/usr/bin:/bin:/opt/bin:/usr/i686-pc-linux-gnu/gcc-bin/4.3.2:/usr/local/texlive/2008/bin/i386-linux</value>
+    <value type="QString" >PLPLOT_LIB=/usr/share/EMBOSS/</value>
     <value type="QString" >PWD=/home/nemo</value>
     <value type="QString" >QTDIR=/usr</value>
     <value type="QString" >QT_IM_MODULE=xim</value>
-    <value type="QString" >SESSION_MANAGER=local/Nautilus:@/tmp/.ICE-unix/4622,unix/Nautilus:/tmp/.ICE-unix/4622</value>
+    <value type="QString" >SESSION_MANAGER=local/Nautilus:@/tmp/.ICE-unix/8179,unix/Nautilus:/tmp/.ICE-unix/8179</value>
     <value type="QString" >SHELL=/bin/bash</value>
     <value type="QString" >SHLVL=4</value>
-    <value type="QString" >SSH_AGENT_PID=4608</value>
-    <value type="QString" >SSH_AUTH_SOCK=/tmp/ssh-jklcEv4597/agent.4597</value>
+    <value type="QString" >SSH_AGENT_PID=8037</value>
+    <value type="QString" >SSH_AUTH_SOCK=/tmp/ssh-npMccB8019/agent.8019</value>
     <value type="QString" >TERM=linux</value>
     <value type="QString" >USER=nemo</value>
     <value type="QString" >WINDOWPATH=7</value>
@@ -180,26 +175,7 @@
    </valuelist>
    <value key="abstractProcess.command" type="QString" >/usr/bin/make</value>
    <value key="abstractProcess.enabled" type="bool" >true</value>
-   <value key="abstractProcess.workingDirectory" type="QString" >/mnt/win/temp/installer/qindle/qindle/qwsserver</value>
-  </valuemap>
- </data>
- <data>
-  <variable>buildconfiguration-Debug-cleanstep0</variable>
-  <valuemap type="QVariantMap" >
-   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Debug</value>
-  </valuemap>
- </data>
- <data>
-  <variable>buildconfiguration-Release-buildstep0</variable>
-  <valuemap type="QVariantMap" >
-   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Release</value>
-   <value key="buildConfiguration" type="int" >0</value>
-  </valuemap>
- </data>
- <data>
-  <variable>buildconfiguration-Release-buildstep1</variable>
-  <valuemap type="QVariantMap" >
-   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString" >Release</value>
+   <value key="abstractProcess.workingDirectory" type="QString" >/mnt/win/project/kindle/qindle/qindle/qwsserver</value>
   </valuemap>
  </data>
  <data>
@@ -211,7 +187,6 @@
  <data>
   <variable>buildconfigurations</variable>
   <valuelist type="QVariantList" >
-   <value type="QString" >Debug</value>
    <value type="QString" >Release</value>
   </valuelist>
  </data>
