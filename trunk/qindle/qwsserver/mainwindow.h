@@ -27,6 +27,9 @@
 #include "fileutil.h"
 #include "programdb.h"
 
+#define KINDLE_ROOT "/mnt/us"
+#define STYLESHEET "./eink.qss"
+
 namespace Ui
 {
     class MainWindow;
@@ -50,6 +53,7 @@ private:
     bool rmori;
 
 private slots:
+    void on_action_Setting_triggered();
     void on_tableView_activated(QModelIndex index);
     void on_action_Cut_triggered();
     void on_action_Paste_triggered();

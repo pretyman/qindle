@@ -21,7 +21,7 @@
 ProgramDB::ProgramDB()
 {
     db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("/home/nemo/temp/test.db");
+    db.setDatabaseName(DATAFILE);
     db.open();
 }
 
