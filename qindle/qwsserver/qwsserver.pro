@@ -12,3 +12,4 @@ HEADERS += mainwindow.h \
     fileutil.h \
     programdb.h
 FORMS += mainwindow.ui
+RESOURCES += 

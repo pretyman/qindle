@@ -45,7 +45,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_action_File_Manager_triggered()
 {
     ui->treeView->setModel(&model);
-    ui->treeView->setRootIndex(model.index("/mnt/us"));
+    ui->treeView->setRootIndex(model.index(KINDLE_ROOT));
     ui->stackedWidget->setCurrentIndex(0);
     ui->treeView->setFocus();
 }
@@ -165,4 +165,9 @@ void MainWindow::on_treeView_expanded(QModelIndex index)
 void MainWindow::on_treeView_collapsed(QModelIndex index)
 {
     ui->treeView->resizeColumnToContents(0);
+}
+
+void MainWindow::on_action_Setting_triggered()
+{
+    ui->stackedWidget->setCurrentIndex(2);
 }

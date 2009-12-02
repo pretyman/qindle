@@ -1,0 +1,9 @@
+* {
+     selection-background-color: black;
+ }
+
+*:focus {
+     border-width: 2px;
+     border-style: dashed;
+     border-color: black;
+ }

@@ -55,7 +55,7 @@
    <valuelist key="abstractProcess.Environment" type="QVariantList" >
     <value type="QString" >CONFIG_PROTECT_MASK=/etc/sandbox.d /etc/env.d/java/ /etc/udev/rules.d /etc/fonts/fonts.conf /etc/gconf /etc/terminfo /etc/ca-certificates.conf /etc/revdep-rebuild</value>
     <value type="QString" >CVS_RSH=ssh</value>
-    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-tXGEhOEJEN,guid=2eeda91bf6b0e553758d79144b147237</value>
+    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-xQ0yQHJELt,guid=f743cdbc8cad3ddb7824c08e4b15c286</value>
     <value type="QString" >DESKTOP_STARTUP_ID=</value>
     <value type="QString" >DISPLAY=:0.0</value>
     <value type="QString" >EDITOR=/bin/nano</value>
@@ -89,11 +89,11 @@
     <value type="QString" >PWD=/home/nemo</value>
     <value type="QString" >QTDIR=/usr</value>
     <value type="QString" >QT_IM_MODULE=xim</value>
-    <value type="QString" >SESSION_MANAGER=local/Nautilus:@/tmp/.ICE-unix/8179,unix/Nautilus:/tmp/.ICE-unix/8179</value>
+    <value type="QString" >SESSION_MANAGER=local/Nautilus:@/tmp/.ICE-unix/7841,unix/Nautilus:/tmp/.ICE-unix/7841</value>
     <value type="QString" >SHELL=/bin/bash</value>
     <value type="QString" >SHLVL=4</value>
-    <value type="QString" >SSH_AGENT_PID=8037</value>
-    <value type="QString" >SSH_AUTH_SOCK=/tmp/ssh-npMccB8019/agent.8019</value>
+    <value type="QString" >SSH_AGENT_PID=7706</value>
+    <value type="QString" >SSH_AUTH_SOCK=/tmp/ssh-wHztuI7678/agent.7678</value>
     <value type="QString" >TERM=linux</value>
     <value type="QString" >USER=nemo</value>
     <value type="QString" >WINDOWPATH=7</value>
@@ -122,7 +122,7 @@
    <valuelist key="abstractProcess.Environment" type="QVariantList" >
     <value type="QString" >CONFIG_PROTECT_MASK=/etc/sandbox.d /etc/env.d/java/ /etc/udev/rules.d /etc/fonts/fonts.conf /etc/gconf /etc/terminfo /etc/ca-certificates.conf /etc/revdep-rebuild</value>
     <value type="QString" >CVS_RSH=ssh</value>
-    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-tXGEhOEJEN,guid=2eeda91bf6b0e553758d79144b147237</value>
+    <value type="QString" >DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-xQ0yQHJELt,guid=f743cdbc8cad3ddb7824c08e4b15c286</value>
     <value type="QString" >DESKTOP_STARTUP_ID=</value>
     <value type="QString" >DISPLAY=:0.0</value>
     <value type="QString" >EDITOR=/bin/nano</value>
@@ -156,11 +156,11 @@
     <value type="QString" >PWD=/home/nemo</value>
     <value type="QString" >QTDIR=/usr</value>
     <value type="QString" >QT_IM_MODULE=xim</value>
-    <value type="QString" >SESSION_MANAGER=local/Nautilus:@/tmp/.ICE-unix/8179,unix/Nautilus:/tmp/.ICE-unix/8179</value>
+    <value type="QString" >SESSION_MANAGER=local/Nautilus:@/tmp/.ICE-unix/7841,unix/Nautilus:/tmp/.ICE-unix/7841</value>
     <value type="QString" >SHELL=/bin/bash</value>
     <value type="QString" >SHLVL=4</value>
-    <value type="QString" >SSH_AGENT_PID=8037</value>
-    <value type="QString" >SSH_AUTH_SOCK=/tmp/ssh-npMccB8019/agent.8019</value>
+    <value type="QString" >SSH_AGENT_PID=7706</value>
+    <value type="QString" >SSH_AUTH_SOCK=/tmp/ssh-wHztuI7678/agent.7678</value>
     <value type="QString" >TERM=linux</value>
     <value type="QString" >USER=nemo</value>
     <value type="QString" >WINDOWPATH=7</value>
