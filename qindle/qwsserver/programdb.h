@@ -26,7 +26,7 @@
 #include <QSqlQueryModel>
 #include <QSqlRecord>
 
-#define DATAFILE "./system.db"
+#define DATAFILE "/usr/local/share/qindle/system.db"
 class ProgramDB : public QObject
 {
     Q_OBJECT
