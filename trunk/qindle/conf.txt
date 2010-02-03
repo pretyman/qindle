@@ -29,11 +29,15 @@ Installation options:
  These are optional, but you may specify install directories.
 
     -prefix <dir> ...... This will install everything relative to <dir>
-                         (default /usr/local/Trolltech/Qt-4.6.0)
+                         (default /usr/local/Trolltech/QtEmbedded-4.6.0-arm)
+
+    -hostprefix [dir] .. Tools and libraries needed when developing
+                         applications are installed in [dir]. If [dir] is
+                         not given, the current build directory will be used.
 
   * -prefix-install .... Force a sandboxed "local" installation of
                          Qt. This will install into
-                         /usr/local/Trolltech/Qt-4.6.0, if this option is
+                         /usr/local/Trolltech/QtEmbedded-4.6.0-arm, if this option is
                          disabled then some platforms will attempt a
                          "system" install by placing default values to
                          be placed in a system location other than
@@ -97,8 +101,8 @@ Configure options:
     -no-largefile ...... Disables large file support.
  +  -largefile ......... Enables Qt to access files larger than 4 GB.
 
-    -no-exceptions ..... Disable exceptions on compilers that support it.
- *  -exceptions ........ Enable exceptions on compilers that support it.
+ *  -no-exceptions ..... Disable exceptions on compilers that support it.
+    -exceptions ........ Enable exceptions on compilers that support it.
 
     -no-accessibility .. Do not compile Accessibility support.
  *  -accessibility ..... Compile Accessibility support.
@@ -154,13 +158,10 @@ Configure options:
     -declarative ....... Build the declarative module.
 
     -platform target ... The operating system and compiler you are building
-                         on (linux-g++).
+                         on (qws/linux-generic-g++).
 
                          See the README file for a list of supported
                          operating systems and compilers.
-    -graphicssystem <sys> Sets an alternate graphics system. Available options are:
-                           raster - Software rasterizer
-                           opengl - Rendering via OpenGL, Experimental!
 
     -no-mmx ............ Do not compile with use of MMX instructions.
     -no-3dnow .......... Do not compile with use of 3DNOW instructions.
@@ -261,90 +262,94 @@ Additional options:
                               linker optimizations (Qt/X11 and Qt for Embedded Linux only;
                               experimental; needs GNU ld >= 2.18).
 
-    -no-separate-debug-info . Do not store debug information in a separate file.
- *  -separate-debug-info .... Strip debug information into a separate .debug file.
+ *  -no-separate-debug-info . Do not store debug information in a separate file.
+    -separate-debug-info .... Strip debug information into a separate .debug file.
 
 
-Qt/X11 only:
+Qt for Embedded Linux only:
 
-    -no-gtkstyle ....... Do not build the GTK theme integration.
- +  -gtkstyle .......... Build the GTK theme integration.
+    -xplatform target ... The target platform when cross-compiling.
 
- *  -no-nas-sound ...... Do not compile in NAS sound support.
-    -system-nas-sound .. Use NAS libaudio from the operating system.
-                         See http://radscan.com/nas.html
+    -no-feature-<feature> Do not compile in <feature>.
+    -feature-<feature> .. Compile in <feature>. The available features
+                          are described in src/corelib/global/qfeatures.txt
 
-    -no-opengl ......... Do not support OpenGL.
- +  -opengl <api> ...... Enable OpenGL support.
-                         With no parameter, this will auto-detect the "best"
-                         OpenGL API to use. If desktop OpenGL is avaliable, it
-                         will be used. Use desktop, es1, es1cl or es2 for <api>
-                         to force the use of the Desktop (OpenGL 1.x or 2.x),
-                         OpenGL ES 1.x Common profile, 1.x Common Lite profile
-                         or 2.x APIs instead. On X11, the EGL API will be used
-                         to manage GL contexts in the case of OpenGL ES
+    -embedded <arch> .... This will enable the embedded build, you must have a
+                          proper license for this switch to work.
+                          Example values for <arch>: arm mips x86 generic
 
-     -no-openvg ........ Do not support OpenVG.
- +   -openvg ........... Enable OpenVG support.
-                         Requires EGL support, typically supplied by an OpenGL
-                         or other graphics implementation.
+    -armfpa ............. Target platform uses the ARM-FPA floating point format.
+    -no-armfpa .......... Target platform does not use the ARM-FPA floating point format.
 
-    -no-sm ............. Do not support X Session Management.
- *  -sm ................ Support X Session Management, links in -lSM -lICE.
+                          The floating point format is usually autodetected by configure. Use this
+                          to override the detected value.
 
-    -no-xshape ......... Do not compile XShape support.
- *  -xshape ............ Compile XShape support.
-                         Requires X11/extensions/shape.h.
+    -little-endian ...... Target platform is little endian (LSB first).
+    -big-endian ......... Target platform is big endian (MSB first).
 
-    -no-xsync .......... Do not compile XSync support.
- *  -xsync ............. Compile XSync support.
-                         Requires X11/extensions/sync.h.
+    -host-little-endian . Host platform is little endian (LSB first).
+    -host-big-endian .... Host platform is big endian (MSB first).
 
-    -no-xinerama ....... Do not compile Xinerama (multihead) support.
- *  -xinerama .......... Compile Xinerama support.
-                         Requires X11/extensions/Xinerama.h and libXinerama.
-			 By default, Xinerama support will be compiled if
-                         available and the shared libraries are dynamically
-                         loaded at runtime.
+                          You only need to specify the endianness when
+                          cross-compiling, otherwise the host
+                          endianness will be used.
 
-    -no-xcursor ........ Do not compile Xcursor support.
- *  -xcursor ........... Compile Xcursor support.
-                         Requires X11/Xcursor/Xcursor.h and libXcursor.
-			 By default, Xcursor support will be compiled if
-                         available and the shared libraries are dynamically
-                         loaded at runtime.
+    -no-freetype ........ Do not compile in Freetype2 support.
+    -qt-freetype ........ Use the libfreetype bundled with Qt.
+ *  -system-freetype .... Use libfreetype from the operating system.
+                          See http://www.freetype.org/
 
-    -no-xfixes ......... Do not compile Xfixes support.
- *  -xfixes ............ Compile Xfixes support.
-                         Requires X11/extensions/Xfixes.h and libXfixes.
-			 By default, Xfixes support will be compiled if
-                         available and the shared libraries are dynamically
-                         loaded at runtime.
+    -qconfig local ...... Use src/corelib/global/qconfig-local.h rather than the
+                          default (full).
 
-    -no-xrandr ......... Do not compile Xrandr (resize and rotate) support.
- *  -xrandr ............ Compile Xrandr support.
-                         Requires X11/extensions/Xrandr.h and libXrandr.
+    -depths <list> ...... Comma-separated list of supported bit-per-pixel
+                          depths, from: 1, 4, 8, 12, 15, 16, 18, 24, 32 and 'all'.
 
-    -no-xrender ........ Do not compile Xrender support.
- *  -xrender ........... Compile Xrender support.
-                         Requires X11/extensions/Xrender.h and libXrender.
+    -qt-decoration-<style> ....Enable a decoration <style> in the QtGui library,
+                               by default all available decorations are on.
+			       Possible values for <style>: [ styled windows default ]
+    -plugin-decoration-<style> Enable decoration <style> as a plugin to be
+                               linked to at run time.
+			       Possible values for <style>: [  default styled windows ]
+    -no-decoration-<style> ....Disable decoration <style> entirely.
+                               Possible values for <style>: [ styled windows default ]
 
-    -no-mitshm ......... Do not compile MIT-SHM support.
- *  -mitshm ............ Compile MIT-SHM support.
-                         Requires sys/ipc.h, sys/shm.h and X11/extensions/XShm.h
+    -no-opengl .......... Do not support OpenGL.
+    -opengl <api> ....... Enable OpenGL ES support
+                          With no parameter, this will attempt to auto-detect OpenGL ES 1.x
+                          or 2.x. Use es1, es1cl or es2 for <api> to override auto-detection.
 
-    -no-fontconfig ..... Do not compile FontConfig (anti-aliased font) support.
- *  -fontconfig ........ Compile FontConfig support.
-                         Requires fontconfig/fontconfig.h, libfontconfig,
-                         freetype.h and libfreetype.
+                          NOTE: A QGLScreen driver for the hardware is required to support
+                                OpenGL ES on Qt for Embedded Linux.
 
-    -no-xinput.......... Do not compile Xinput support.
- *  -xinput ............ Compile Xinput support. This also enabled tablet support
-                         which requires IRIX with wacom.h and libXi or
-                         XFree86 with X11/extensions/XInput.h and libXi.
+    -qt-gfx-<driver> ... Enable a graphics <driver> in the QtGui library.
+                         Possible values for <driver>: [ linuxfb transformed qvfb vnc multiscreen directfb qnx ]
+    -plugin-gfx-<driver> Enable graphics <driver> as a plugin to be
+                         linked to at run time.
+                         Possible values for <driver>: [  ahi directfb linuxfb powervr qvfb transformed vnc ]
+    -no-gfx-<driver> ... Disable graphics <driver> entirely.
+                         Possible values for <driver>: [ linuxfb transformed qvfb vnc multiscreen directfb qnx ]
 
-    -no-xkb ............ Do not compile XKB (X KeyBoard extension) support.
- *  -xkb ............... Compile XKB support.
+    -qt-kbd-<driver> ... Enable a keyboard <driver> in the QtGui library.
+                         Possible values for <driver>: [ tty linuxinput qvfb qnx ]
+
+    -plugin-kbd-<driver> Enable keyboard <driver> as a plugin to be linked to
+                         at runtime.
+                         Possible values for <driver>: [  linuxinput ]
+
+    -no-kbd-<driver> ... Disable keyboard <driver> entirely.
+                         Possible values for <driver>: [ tty linuxinput qvfb qnx ]
+
+    -qt-mouse-<driver> ... Enable a mouse <driver> in the QtGui library.
+                           Possible values for <driver>: [ pc linuxtp linuxinput tslib qvfb qnx ]
+    -plugin-mouse-<driver> Enable mouse <driver> as a plugin to be linked to
+                           at runtime.
+                           Possible values for <driver>: [  linuxtp pc tslib ]
+    -no-mouse-<driver> ... Disable mouse <driver> entirely.
+                           Possible values for <driver>: [ pc linuxtp linuxinput tslib qvfb qnx ]
+
+    -iwmmxt ............ Compile using the iWMMXt instruction set
+                         (available on some XScale CPUs).
 
     -no-glib ........... Do not compile Glib support.
  +  -glib .............. Compile Glib support.

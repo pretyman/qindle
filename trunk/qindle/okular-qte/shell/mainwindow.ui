@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="documentMode">
+   <bool>false</bool>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="margin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>596</width>
+         <height>343</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>600</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_File">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <widget class="QMenu" name="menuOpen_Recent">
+     <property name="title">
+      <string>Open &amp;Recent</string>
+     </property>
+     <addaction name="separator"/>
+     <addaction name="action_Clear_List"/>
+    </widget>
+    <widget class="QMenu" name="menu_Export_As">
+     <property name="title">
+      <string>&amp;Export As</string>
+     </property>
+     <addaction name="action_Plain_Text"/>
+     <addaction name="actionP_DF"/>
+     <addaction name="action_Archive"/>
+    </widget>
+    <addaction name="action_Open"/>
+    <addaction name="menuOpen_Recent"/>
+    <addaction name="separator"/>
+    <addaction name="action_Save_As"/>
+    <addaction name="menu_Export_As"/>
+    <addaction name="separator"/>
+    <addaction name="action_Properties"/>
+    <addaction name="actionE_mbedded_Files"/>
+    <addaction name="separator"/>
+    <addaction name="actionRe_load"/>
+    <addaction name="actionE_xit"/>
+   </widget>
+   <widget class="QMenu" name="menu_View">
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+    <widget class="QMenu" name="menu_View_Mode">
+     <property name="title">
+      <string>&amp;View Mode</string>
+     </property>
+     <addaction name="action_Single_Page"/>
+     <addaction name="action_Double_Page"/>
+     <addaction name="action_Overview"/>
+    </widget>
+    <widget class="QMenu" name="menuO_rientation">
+     <property name="title">
+      <string>O&amp;rientation</string>
+     </property>
+     <addaction name="actionRotate_Left"/>
+     <addaction name="actionRotate_Right"/>
+     <addaction name="action_Original"/>
+    </widget>
+    <addaction name="actionZoom_In"/>
+    <addaction name="actionZoom_Out"/>
+    <addaction name="action_Zoom"/>
+    <addaction name="separator"/>
+    <addaction name="actionFit_Width"/>
+    <addaction name="actionFit_Page"/>
+    <addaction name="action_Trim_Margens"/>
+    <addaction name="separator"/>
+    <addaction name="menu_View_Mode"/>
+    <addaction name="action_Continuous"/>
+    <addaction name="menuO_rientation"/>
+   </widget>
+   <widget class="QMenu" name="menu_Goto">
+    <property name="title">
+     <string>&amp;Goto</string>
+    </property>
+    <addaction name="action_Next_Page"/>
+    <addaction name="action_Privous_Page"/>
+    <addaction name="action_First_Page"/>
+    <addaction name="action_Last_Page"/>
+    <addaction name="separator"/>
+    <addaction name="actionF_orward"/>
+    <addaction name="action_Backward"/>
+    <addaction name="separator"/>
+    <addaction name="action_Goto_Page"/>
+    <addaction name="separator"/>
+    <addaction name="actionF_ind"/>
+   </widget>
+   <widget class="QMenu" name="menu_Navagation">
+    <property name="title">
+     <string>&amp;Navagation</string>
+    </property>
+    <widget class="QMenu" name="menu_Bookmark">
+     <property name="title">
+      <string>&amp;Bookmark</string>
+     </property>
+     <addaction name="action_Next_Bookmark"/>
+     <addaction name="action_Privous_Bookmark"/>
+     <addaction name="action_Add_Bookmark"/>
+     <addaction name="separator"/>
+     <addaction name="action_Shoe_Bookmarks"/>
+    </widget>
+    <addaction name="action_Contents"/>
+    <addaction name="action_Thumbnail"/>
+    <addaction name="menu_Bookmark"/>
+   </widget>
+   <widget class="QMenu" name="menu_Setting">
+    <property name="title">
+     <string>&amp;Settings</string>
+    </property>
+    <addaction name="actionSpeak_Current_Page"/>
+    <addaction name="actionS_top_speaking"/>
+    <addaction name="separator"/>
+    <addaction name="actionConfigure_Backend"/>
+    <addaction name="actionConfigure_Okular"/>
+   </widget>
+   <widget class="QMenu" name="menu_Help">
+    <property name="title">
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="actionAbout_Backend"/>
+    <addaction name="actionAbout_Okular"/>
+    <addaction name="actionAbout_Qt"/>
+   </widget>
+   <addaction name="menu_File"/>
+   <addaction name="menu_Goto"/>
+   <addaction name="menu_View"/>
+   <addaction name="menu_Navagation"/>
+   <addaction name="menu_Setting"/>
+   <addaction name="menu_Help"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="action_Open">
+   <property name="text">
+    <string>&amp;Open</string>
+   </property>
+  </action>
+  <action name="action_Clear_List">
+   <property name="text">
+    <string>&amp;Clear List</string>
+   </property>
+  </action>
+  <action name="action_Save_As">
+   <property name="text">
+    <string>&amp;Save As</string>
+   </property>
+  </action>
+  <action name="action_Plain_Text">
+   <property name="text">
+    <string>&amp;Plain Text</string>
+   </property>
+  </action>
+  <action name="actionP_DF">
+   <property name="text">
+    <string>P&amp;DF</string>
+   </property>
+  </action>
+  <action name="action_Archive">
+   <property name="text">
+    <string>&amp;Archive</string>
+   </property>
+  </action>
+  <action name="action_Properties">
+   <property name="text">
+    <string>&amp;Properties</string>
+   </property>
+  </action>
+  <action name="actionE_mbedded_Files">
+   <property name="text">
+    <string>E&amp;mbedded Files</string>
+   </property>
+  </action>
+  <action name="actionRe_load">
+   <property name="text">
+    <string>Re&amp;load</string>
+   </property>
+  </action>
+  <action name="actionE_xit">
+   <property name="text">
+    <string>E&amp;xit</string>
+   </property>
+  </action>
+  <action name="action_Copy">
+   <property name="text">
+    <string>&amp;Copy</string>
+   </property>
+  </action>
+  <action name="action_Select_All">
+   <property name="text">
+    <string>&amp;Select All</string>
+   </property>
+  </action>
+  <action name="action_Find">
+   <property name="text">
+    <string>&amp;Find</string>
+   </property>
+  </action>
+  <action name="action_Zoom">
+   <property name="text">
+    <string>&amp;Zoom To</string>
+   </property>
+  </action>
+  <action name="actionZoom_In">
+   <property name="text">
+    <string>Zoom &amp;In</string>
+   </property>
+  </action>
+  <action name="actionZoom_Out">
+   <property name="text">
+    <string>Zoom &amp;Out</string>
+   </property>
+  </action>
+  <action name="actionFit_Width">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Fit &amp;Width</string>
+   </property>
+  </action>
+  <action name="actionFit_Page">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Fit &amp;Page</string>
+   </property>
+  </action>
+  <action name="action_Single_Page">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Single Page</string>
+   </property>
+  </action>
+  <action name="action_Double_Page">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Double Page</string>
+   </property>
+  </action>
+  <action name="action_Overview">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Overview</string>
+   </property>
+  </action>
+  <action name="action_Continuous">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Continuous</string>
+   </property>
+  </action>
+  <action name="action_Trim_Margens">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Trim Margens</string>
+   </property>
+  </action>
+  <action name="actionRotate_Left">
+   <property name="text">
+    <string>Rotate &amp;Left</string>
+   </property>
+  </action>
+  <action name="actionRotate_Right">
+   <property name="text">
+    <string>Rotate &amp;Right</string>
+   </property>
+  </action>
+  <action name="action_Original">
+   <property name="text">
+    <string>&amp;Original</string>
+   </property>
+  </action>
+  <action name="action_Next_Page">
+   <property name="text">
+    <string>&amp;Next Page</string>
+   </property>
+  </action>
+  <action name="action_Privous_Page">
+   <property name="text">
+    <string>&amp;Privous Page</string>
+   </property>
+  </action>
+  <action name="action_First_Page">
+   <property name="text">
+    <string>&amp;First Page</string>
+   </property>
+  </action>
+  <action name="action_Last_Page">
+   <property name="text">
+    <string>&amp;Last Page</string>
+   </property>
+  </action>
+  <action name="actionF_orward">
+   <property name="text">
+    <string>F&amp;orward</string>
+   </property>
+  </action>
+  <action name="action_Backward">
+   <property name="text">
+    <string>&amp;Backward</string>
+   </property>
+  </action>
+  <action name="action_Goto_Page">
+   <property name="text">
+    <string>&amp;Goto Page</string>
+   </property>
+  </action>
+  <action name="action_Contents">
+   <property name="text">
+    <string>&amp;Contents</string>
+   </property>
+  </action>
+  <action name="action_Thumbnail">
+   <property name="text">
+    <string>&amp;Thumbnail</string>
+   </property>
+  </action>
+  <action name="action_Next_Bookmark">
+   <property name="text">
+    <string>&amp;Next Bookmark</string>
+   </property>
+  </action>
+  <action name="action_Privous_Bookmark">
+   <property name="text">
+    <string>&amp;Privous Bookmark</string>
+   </property>
+  </action>
+  <action name="action_Add_Bookmark">
+   <property name="text">
+    <string>&amp;Add Bookmark</string>
+   </property>
+  </action>
+  <action name="action_Shoe_Bookmarks">
+   <property name="text">
+    <string>&amp;Show Bookmarks</string>
+   </property>
+  </action>
+  <action name="actionSpeak_Current_Page">
+   <property name="text">
+    <string>&amp;Speak Current Page</string>
+   </property>
+  </action>
+  <action name="actionS_top_speaking">
+   <property name="text">
+    <string>S&amp;top Speaking</string>
+   </property>
+  </action>
+  <action name="actionConfigure_Backend">
+   <property name="text">
+    <string>Configure &amp;Backend</string>
+   </property>
+  </action>
+  <action name="actionConfigure_Okular">
+   <property name="text">
+    <string>Configure &amp;Okular</string>
+   </property>
+  </action>
+  <action name="actionAbout_Backend">
+   <property name="text">
+    <string>About &amp;Backend</string>
+   </property>
+  </action>
+  <action name="actionAbout_Okular">
+   <property name="text">
+    <string>About &amp;Okular</string>
+   </property>
+  </action>
+  <action name="actionAbout_Qt">
+   <property name="text">
+    <string>About &amp;Qt</string>
+   </property>
+  </action>
+  <action name="actionF_ind">
+   <property name="text">
+    <string>F&amp;ind</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>
