@@ -11,7 +11,7 @@
 #include "sourcereference_p.h"
 
 #include <QtCore/QString>
-#include <klocale.h>
+#include "plocale.h"
 
 using namespace Okular;
 
@@ -88,5 +88,5 @@ QString Okular::sourceReferenceToolTip( const QString &source, int row, int col 
 {
     Q_UNUSED( row );
     Q_UNUSED( col );
-    return i18nc( "'source' is a source file", "Source: %1", source );
+    return i18n( "Source: %1", source );
 }

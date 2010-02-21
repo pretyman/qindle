@@ -10,14 +10,14 @@
 #include "pagecontroller_p.h"
 
 // qt/kde includes
-#include <kglobal.h>
+//#include <kglobal.h>
 #include <threadweaver/ThreadWeaver.h>
 
 // local includes
 #include "page_p.h"
 #include "rotationjob_p.h"
 
-K_GLOBAL_STATIC( Okular::PageController, page_controller_self )
+static Okular::PageController* page_controller_self;
 
 using namespace Okular;
 

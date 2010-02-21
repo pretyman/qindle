@@ -12,7 +12,7 @@
 #include <QtGui/QComboBox>
 #include <QtGui/QLabel>
 
-#include <klocale.h>
+#include "plocale.h"
 
 #include "ui_chooseenginewidget.h"
 

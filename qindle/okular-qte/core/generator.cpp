@@ -16,7 +16,7 @@
 
 #include <kdebug.h>
 #include <kicon.h>
-#include <klocale.h>
+#include "plocale.h"
 
 #include "document.h"
 #include "document_p.h"
@@ -552,11 +552,11 @@ ExportFormat ExportFormat::standardFormat( StandardExportFormat type )
         case OpenDocumentText:
             return ExportFormat(
                 KIcon( "application-vnd.oasis.opendocument.text" ),
-                i18nc( "This is the document format", "OpenDocument Text" ),
+                i18n( "OpenDocument Text" ),
                 KMimeType::mimeType( "application/vnd.oasis.opendocument.text" ) );
 	    break;
         case HTML:
-            return ExportFormat( KIcon( "text-html" ), i18nc( "This is the document format", "HTML" ), KMimeType::mimeType( "text/html" ) );
+            return ExportFormat( KIcon( "text-html" ), i18n( "HTML" ), KMimeType::mimeType( "text/html" ) );
             break;
     }
     return ExportFormat();
