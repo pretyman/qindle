@@ -1,7 +1,7 @@
-//Modified by Li-Miao <lm3783@gmail.com> 2009
 /****************************************************************************
 **
 ** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -21,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -34,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -50,6 +49,7 @@
 #include "qpixmap.h"
 #include "qvarlengtharray.h"
 #include "qwsdisplay_qws.h"
+#include "qpainter.h"
 #include <private/qdrawhelper_p.h>
 #include <private/qpaintengine_raster_p.h>
 #include <private/qpixmap_raster_p.h>
@@ -181,7 +181,27 @@ void QScreenCursor::set(const QImage &image, int hotx, int hoty)
     const QRect r = boundingRect();
 
     hotspot = QPoint(hotx, hoty);
-    cursor = image;
+    // These are in almost all cases the fastest formats to blend
+    QImage::Format f;
+    switch (qt_screen->depth()) {
+    case 12:
+        f = QImage::Format_ARGB4444_Premultiplied;
+        break;
+    case 15:
+        f =  QImage::Format_ARGB8555_Premultiplied;
+        break;
+    case 16:
+        f = QImage::Format_ARGB8565_Premultiplied;
+        break;
+    case 18:
+        f = QImage::Format_ARGB6666_Premultiplied;
+        break;
+    default:
+        f =  QImage::Format_ARGB32_Premultiplied;
+    }
+
+    cursor = image.convertToFormat(f);
+
     size = image.size();
 
     if (enable && !hwaccel)
@@ -199,10 +219,12 @@ void QScreenCursor::set(const QImage &image, int hotx, int hoty)
 */
 void QScreenCursor::move(int x, int y)
 {
-    const QRegion r = boundingRect();
+    QRegion r = boundingRect();
     pos = QPoint(x,y);
-    if (enable && !hwaccel)
-        qt_screen->exposeRegion(r | boundingRect(), 0);
+    if (enable && !hwaccel) {
+        r |= boundingRect();
+        qt_screen->exposeRegion(r, 0);
+    }
 }
 
 
@@ -578,7 +600,7 @@ static void blit_template(QScreen *screen, const QImage &image,
     const int screenStride = screen->linestep();
     const int imageStride = image.bytesPerLine();
 
-    if (region.numRects() == 1) {
+    if (region.rectCount() == 1) {
         const QRect r = region.boundingRect();
         const SRC *src = reinterpret_cast<const SRC*>(image.scanLine(r.y()))
                          + r.x();
@@ -855,6 +877,7 @@ Q_STATIC_TEMPLATE_FUNCTION inline quint8 qt_convertToGray4(SRC color);
 template <>
 inline quint8 qt_convertToGray4(quint32 color)
 {
+    //return qGray(color) >> 4; modified by nemo
     return (15-(qGray(color) >> 4));
 }
 
@@ -864,6 +887,7 @@ inline quint8 qt_convertToGray4(quint16 color)
     const int r = (color & 0xf800) >> 11;
     const int g = (color & 0x07e0) >> 6; // only keep 5 bit
     const int b = (color & 0x001f);
+    //return (r * 11 + g * 16 + b * 5) >> 6; modified by nemo
     return (15-(r * 11 + g * 16 + b * 5) >> 6);
 }
 
@@ -1363,7 +1387,7 @@ QImage::Format QScreenPrivate::preferredImageFormat() const
 
     QScreen provides several functions to retrieve information about
     the color palette: The clut() function returns a pointer to the
-    color lookup table (i.e. its color palette). Use the numCols()
+    color lookup table (i.e. its color palette). Use the colorCount()
     function to determine the number of entries in this table, and the
     alloc() function to retrieve the palette index of the color that
     is the closest match to a given RGB value.
@@ -1976,11 +2000,19 @@ QImage::Format QScreenPrivate::preferredImageFormat() const
     i.e. in modes where only the palette indexes (and not the actual
     color values) are stored in memory.
 
-    \sa alloc(), depth(), numCols()
+    \sa alloc(), depth(), colorCount()
 */
 
 /*!
+    \obsolete
     \fn int QScreen::numCols()
+
+    \sa colorCount()
+*/
+
+/*!
+    \since 4.6
+    \fn int QScreen::colorCount()
 
     Returns the number of entries in the screen's color lookup table
     (i.e. its color palette). A pointer to the color table can be
@@ -2081,7 +2113,7 @@ void QScreen::setPixelFormat(QImage::Format format)
     i.e. in modes where only the palette indexes (and not the actual
     color values) are stored in memory.
 
-    \sa clut(), numCols()
+    \sa clut(), colorCount()
 */
 
 int QScreen::alloc(unsigned int r,unsigned int g,unsigned int b)
@@ -2418,7 +2450,7 @@ void QScreen::exposeRegion(QRegion r, int windowIndex)
 #endif
     compose(0, r, blendRegion, &blendBuffer, changing);
 
-    if (blendBuffer) {
+    if (blendBuffer && !blendBuffer->isNull()) {
         const QPoint offset = blendRegion.boundingRect().topLeft();
 #ifndef QT_NO_QWS_CURSOR
         if (qt_screencursor && !qt_screencursor->isAccelerated()) {
@@ -2433,7 +2465,7 @@ void QScreen::exposeRegion(QRegion r, int windowIndex)
         delete blendBuffer;
     }
 
-    if (r.numRects() == 1) {
+    if (r.rectCount() == 1) {
         setDirty(r.boundingRect());
     } else {
         const QVector<QRect> rects = r.rects();
@@ -2709,7 +2741,7 @@ void QScreen::compose(int level, const QRegion &exposed, QRegion &blend,
             default:
                 break;
             }
-            spanData.setup(qwsServer->backgroundBrush(), 256);
+            spanData.setup(qwsServer->backgroundBrush(), 256, QPainter::CompositionMode_SourceOver);
             spanData.dx = off.x();
             spanData.dy = off.y();
         } else if (!surface->isBuffered()) {
@@ -2774,7 +2806,7 @@ void QScreen::paintBackground(const QRegion &r)
         rb.prepare(&img);
         QSpanData spanData;
         spanData.init(&rb, 0);
-        spanData.setup(bg, 256);
+        spanData.setup(bg, 256, QPainter::CompositionMode_Source);
         spanData.dx = off.x();
         spanData.dy = off.y();
         Q_ASSERT(spanData.blend);

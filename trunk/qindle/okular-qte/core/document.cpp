@@ -28,23 +28,7 @@
 #include <QtGui/QPrinter>
 #include <QtGui/QPrintDialog>
 
-#include <kaboutdata.h>
-#include <kauthorized.h>
-#include <kcomponentdata.h>
-#include <kconfigdialog.h>
-#include <kdebug.h>
-#include <klibloader.h>
-#include <klocale.h>
-#include <kmacroexpander.h>
-#include <kmessagebox.h>
-#include <kmimetypetrader.h>
-#include <kprocess.h>
-#include <krun.h>
-#include <kshell.h>
-#include <kstandarddirs.h>
-#include <ktemporaryfile.h>
-#include <ktoolinvocation.h>
-#include <kzip.h>
+#include "plocale.h"
 
 // local includes
 #include "action.h"
@@ -157,14 +141,8 @@ QString DocumentPrivate::localizedSize(const QSizeF &size) const
         case Generator::None:
         break;
     }
-    if (KGlobal::locale()->measureSystem() == KLocale::Imperial)
-    {
-        return i18n("%1 x %2 in", inchesWidth, inchesHeight);
-    }
-    else
-    {
         return i18n("%1 x %2 mm", inchesWidth * 25.4, inchesHeight * 25.4);
-    }
+
 }
 
 void DocumentPrivate::cleanupPixmapMemory( qulonglong /*sure? bytesOffset*/ )

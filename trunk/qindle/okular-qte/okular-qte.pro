@@ -1,4 +1,6 @@
 TEMPLATE      = subdirs
 SUBDIRS       = \
-                shell
+                shell \
+                core \
+                kwrapper
                 

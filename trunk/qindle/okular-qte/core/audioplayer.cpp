@@ -14,7 +14,7 @@
 #include <qbuffer.h>
 #include <qdir.h>
 #include <kdebug.h>
-#include <krandom.h>
+//#include <krandom.h>
 #include <phonon/audiooutput.h>
 #include <phonon/abstractmediastream.h>
 #include <phonon/mediaobject.h>
@@ -101,7 +101,7 @@ int AudioPlayerPrivate::newId() const
     QHash< int, PlayData * >::const_iterator itEnd = m_playing.constEnd();
     do
     {
-        newid = KRandom::random();
+        newid = qrand();
         it = m_playing.constFind( newid );
     } while ( it != itEnd );
     return newid;
@@ -128,16 +128,8 @@ bool AudioPlayerPrivate::play( const SoundInfo& si )
             {
                 int newid = newId();
                 m_mapper.setMapping( data->m_mediaobject, newid );
-                KUrl newurl;
-                if ( KUrl::isRelativeUrl( url ) )
-                {
-                    newurl = m_currentDocument;
-                    newurl.setFileName( url );
-                }
-                else
-                {
-                    newurl = url;
-                }
+                QUrl newurl;
+                newurl.setUrl(url);
                 data->m_mediaobject->setCurrentSource( newurl );
                 m_playing.insert( newid, data );
                 valid = true;
@@ -228,7 +220,7 @@ void AudioPlayer::playSound( const Sound * sound, const SoundAction * linksound 
         return;
 
     // we don't play external sounds for remote documents
-    if ( sound->soundType() == Sound::External && !d->m_currentDocument.isLocalFile() )
+    if ( sound->soundType() == Sound::External && !d->m_currentDocument.isValid() )
         return;
 
     kDebug() ;

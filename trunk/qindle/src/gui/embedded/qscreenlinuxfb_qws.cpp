@@ -1,6 +1,7 @@
 /****************************************************************************
 **
 ** Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
 ** This file is part of the QtGui module of the Qt Toolkit.
@@ -20,10 +21,9 @@
 ** ensure the GNU Lesser General Public License version 2.1 requirements
 ** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.0, included in the file LGPL_EXCEPTION.txt in this
-** package.
+** In addition, as a special exception, Nokia gives you certain additional
+** rights.  These rights are described in the Nokia Qt LGPL Exception
+** version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
 **
 ** GNU General Public License Usage
 ** Alternatively, this file may be used under the terms of the GNU
@@ -33,8 +33,8 @@
 ** ensure the GNU General Public License version 3.0 requirements will be
 ** met: http://www.gnu.org/copyleft/gpl.html.
 **
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at http://www.qtsoftware.com/contact.
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
@@ -46,6 +46,7 @@
 #include "qwsdisplay_qws.h"
 #include "qpixmap.h"
 #include <private/qwssignalhandler_p.h>
+#include <private/qcore_unix_p.h> // overrides QT_OPEN
 
 #include <unistd.h>
 #include <stdlib.h>
@@ -122,12 +123,12 @@ void QLinuxFbScreenPrivate::openTty()
 
     if (ttyDevice.isEmpty()) {
         for (const char * const *dev = devs; *dev; ++dev) {
-            ttyfd = ::open(*dev, O_RDWR);
+            ttyfd = QT_OPEN(*dev, O_RDWR);
             if (ttyfd != -1)
                 break;
         }
     } else {
-        ttyfd = ::open(ttyDevice.toAscii().constData(), O_RDWR);
+        ttyfd = QT_OPEN(ttyDevice.toAscii().constData(), O_RDWR);
     }
 
     if (ttyfd == -1)
@@ -144,7 +145,7 @@ void QLinuxFbScreenPrivate::openTty()
 
     // No blankin' screen, no blinkin' cursor!, no cursor!
     const char termctl[] = "\033[9;0]\033[?33l\033[?25l\033[?1c";
-    ::write(ttyfd, termctl, sizeof(termctl));
+    QT_WRITE(ttyfd, termctl, sizeof(termctl));
 }
 
 void QLinuxFbScreenPrivate::closeTty()
@@ -157,9 +158,9 @@ void QLinuxFbScreenPrivate::closeTty()
 
     // Blankin' screen, blinkin' cursor!
     const char termctl[] = "\033[9;15]\033[?33h\033[?25h\033[?0c";
-    ::write(ttyfd, termctl, sizeof(termctl));
+    QT_WRITE(ttyfd, termctl, sizeof(termctl));
 
-    ::close(ttyfd);
+    QT_CLOSE(ttyfd);
     ttyfd = -1;
 }
 
@@ -270,18 +271,16 @@ bool QLinuxFbScreen::connect(const QString &displaySpec)
         QScreen::setFrameBufferLittleEndian(true);
 #endif
 
-    // Check for explicitly specified device
-    const int len = 8; // "/dev/fbx"
-    int m = displaySpec.indexOf(QLatin1String("/dev/fb"));
-
-    QString dev;
-    if (m > 0)
-        dev = displaySpec.mid(m, len);
-    else
-        dev = QLatin1String("/dev/fb0");
+    QString dev = QLatin1String("/dev/fb0");
+    foreach(QString d, args) {
+	if (d.startsWith(QLatin1Char('/'))) {
+	    dev = d;
+	    break;
+	}
+    }
 
     if (access(dev.toLatin1().constData(), R_OK|W_OK) == 0)
-        d_ptr->fd = open(dev.toLatin1().constData(), O_RDWR);
+        d_ptr->fd = QT_OPEN(dev.toLatin1().constData(), O_RDWR);
     if (d_ptr->fd == -1) {
         if (QApplication::type() == QApplication::GuiServer) {
             perror("QScreenLinuxFb::connect");
@@ -289,11 +288,11 @@ bool QLinuxFbScreen::connect(const QString &displaySpec)
             return false;
         }
         if (access(dev.toLatin1().constData(), R_OK) == 0)
-            d_ptr->fd = open(dev.toLatin1().constData(), O_RDONLY);
+            d_ptr->fd = QT_OPEN(dev.toLatin1().constData(), O_RDONLY);
     }
 
-    fb_fix_screeninfo finfo;
-    fb_var_screeninfo vinfo;
+    ::fb_fix_screeninfo finfo;
+    ::fb_var_screeninfo vinfo;
     //#######################
     // Shut up Valgrind
     memset(&vinfo, 0, sizeof(vinfo));
@@ -430,7 +429,7 @@ bool QLinuxFbScreen::connect(const QString &displaySpec)
     if((vinfo.bits_per_pixel==8) || (vinfo.bits_per_pixel==4)) {
         screencols= (vinfo.bits_per_pixel==8) ? 256 : 16;
         int loopc;
-        fb_cmap startcmap;
+        ::fb_cmap startcmap;
         startcmap.start=0;
         startcmap.len=screencols;
         startcmap.red=(unsigned short int *)
@@ -472,7 +471,10 @@ bool QLinuxFbScreen::connect(const QString &displaySpec)
     } else {
         screencols=0;
     }
+
+    //added by Nemo
     this->einkfb=new Qeink;
+
     return true;
 }
 
@@ -490,6 +492,8 @@ void QLinuxFbScreen::disconnect()
     if (data)
         munmap((char*)data,mapsize);
     close(d_ptr->fd);
+
+    //added by Nemo
     delete this->einkfb;
 }
 
@@ -537,8 +541,7 @@ void QLinuxFbScreen::createPalette(fb_cmap &cmap, fb_var_screeninfo &vinfo, fb_f
                 }
             }
         } else {
-            //if (grayscale) {
-            if(1) {
+            if (grayscale) {
                 // Build grayscale palette
                 int i;
                 for(i=0;i<screencols;++i) {
@@ -683,7 +686,7 @@ bool QLinuxFbScreen::initDevice()
 #ifdef __i386__
     // Now init mtrr
     if(!::getenv("QWS_NOMTRR")) {
-        int mfd=open("/proc/mtrr",O_WRONLY,0);
+        int mfd=QT_OPEN("/proc/mtrr",O_WRONLY,0);
         // MTRR entry goes away when file is closed - i.e.
         // hopefully when QWS is killed
         if(mfd != -1) {
@@ -704,6 +707,9 @@ bool QLinuxFbScreen::initDevice()
                 //sentry.base,sentry.size,strerror(errno));
             }
         }
+
+        // Should we close mfd here?
+        //QT_CLOSE(mfd);
     }
 #endif
     if ((vinfo.bits_per_pixel==8) || (vinfo.bits_per_pixel==4) || (finfo.visual==FB_VISUAL_DIRECTCOLOR))
@@ -1321,6 +1327,7 @@ bool QLinuxFbScreen::useOffscreen()
     return true;
 }
 
+//added by nemo: eink update
 void QLinuxFbScreen::setDirty ( const QRect &rectangle ) {
     //qWarning("%d %d %d %d",rectangle.x(),rectangle.y(),rectangle.height(),rectangle.width());
     this->einkfb->fbupdate(rectangle);
@@ -1372,7 +1379,6 @@ void Qeink::einkupdate()
         reflashrect->setRect(0,0,0,0);
     }
 }
-
 
 QT_END_NAMESPACE
 
