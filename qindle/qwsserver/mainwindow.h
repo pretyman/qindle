@@ -28,7 +28,7 @@
 #include "programdb.h"
 
 #define KINDLE_ROOT "/mnt/us"
-#define STYLESHEET "./eink.qss"
+#define STYLESHEET "/usr/local/share/qindle/eink.qss"
 
 namespace Ui
 {

@@ -1375,7 +1375,7 @@ void Qeink::einkupdate()
         sprintf(buffer,"%d %d %d %d %d\n", _EINK_UPDATE_DISPLAY_AREA, reflashrect->x(), reflashrect->y(), reflashrect->x()+reflashrect->width(), reflashrect->y()+reflashrect->height());
         ssize_t n;
         n=write(einkfd,buffer,sizeof(buffer));
-        qWarning("%d %d %d",n, reflashrect->x(), reflashrect->y());
+        //qWarning("%d %d %d",n, reflashrect->x(), reflashrect->y());
         reflashrect->setRect(0,0,0,0);
     }
 }
