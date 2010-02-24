@@ -27,13 +27,14 @@ There is no need to explain how to operate. _Hint: Imagine you have a computer w
 === Key Binding ===
 
 Some keys on Kindle have new functions.
+{{{
 Vol-    Tab
 Vol+   shift-Tab
 menu   pop-up menu(not used)
 back     Esc
 Aa         Ctrl
 SYM      windows key(not used)
-
+}}}
 
 
 Sorry for the shortage of document, I'm working on it. Any suggestions are welcome.
