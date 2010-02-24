@@ -53,7 +53,10 @@ private:
     bool rmori;
 
 private slots:
-    void on_action_Setting_triggered();
+    void on_actionAbout_Kindle_triggered();
+    void on_action_About_triggered();
+    void on_actionA_bout_Qt_triggered();
+    void on_tabWidget_currentChanged(int index);
     void on_tableView_activated(QModelIndex index);
     void on_action_Cut_triggered();
     void on_action_Paste_triggered();
@@ -61,10 +64,9 @@ private slots:
     void on_action_Delete_triggered();
     void on_treeView_activated(QModelIndex index);
     void on_action_Open_triggered();
-    void on_action_Program_Manager_triggered();
     void on_treeView_collapsed(QModelIndex index);
     void on_treeView_expanded(QModelIndex index);
-    void on_action_File_Manager_triggered();
+
 };
 
 #endif // MAINWINDOW_H

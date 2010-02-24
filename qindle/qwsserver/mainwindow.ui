@@ -14,16 +14,22 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QHBoxLayout" name="horizontalLayout">
     <property name="margin">
      <number>0</number>
     </property>
     <item>
-     <widget class="QStackedWidget" name="stackedWidget">
+     <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
        <number>2</number>
       </property>
-      <widget class="QWidget" name="page_1">
+      <property name="documentMode">
+       <bool>false</bool>
+      </property>
+      <widget class="QWidget" name="tabWidgetPage1">
+       <attribute name="title">
+        <string>Fi&amp;le Manager</string>
+       </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
          <widget class="QTreeView" name="treeView">
@@ -40,7 +46,10 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="page_2">
+      <widget class="QWidget" name="tabWidgetPage2">
+       <attribute name="title">
+        <string>Pro&amp;gram Manager</string>
+       </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
          <widget class="QTableView" name="tableView">
@@ -63,46 +72,88 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="page_3">
-       <widget class="QPushButton" name="pushButton">
-        <property name="geometry">
-         <rect>
-          <x>50</x>
-          <y>30</y>
-          <width>89</width>
-          <height>29</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>PushButton</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioButton">
-        <property name="geometry">
-         <rect>
-          <x>240</x>
-          <y>50</y>
-          <width>109</width>
-          <height>25</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>RadioButton</string>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="checkBox">
-        <property name="geometry">
-         <rect>
-          <x>250</x>
-          <y>110</y>
-          <width>91</width>
-          <height>24</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>CheckBox</string>
-        </property>
-       </widget>
+      <widget class="QWidget" name="tabWidgetPage3">
+       <attribute name="title">
+        <string>Prefere&amp;nce</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <widget class="QPushButton" name="pushButton">
+          <property name="text">
+           <string>PushButton</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QRadioButton" name="radioButton">
+          <property name="text">
+           <string>RadioButton</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QCheckBox" name="checkBox">
+          <property name="text">
+           <string>CheckBox</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tabWidgetPage4">
+       <attribute name="title">
+        <string>&amp;Statistics</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QTableWidget" name="tableWidget">
+          <property name="editTriggers">
+           <set>QAbstractItemView::NoEditTriggers</set>
+          </property>
+          <property name="showGrid">
+           <bool>false</bool>
+          </property>
+          <attribute name="horizontalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
+          <row>
+           <property name="text">
+            <string>Date</string>
+           </property>
+          </row>
+          <row>
+           <property name="text">
+            <string>Time</string>
+           </property>
+          </row>
+          <row>
+           <property name="text">
+            <string>Battery</string>
+           </property>
+          </row>
+          <row>
+           <property name="text">
+            <string>Wireless</string>
+           </property>
+          </row>
+          <row>
+           <property name="text">
+            <string>Temperature</string>
+           </property>
+          </row>
+          <row>
+           <property name="text">
+            <string>Free Space</string>
+           </property>
+          </row>
+          <column>
+           <property name="text">
+            <string>Value</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
@@ -114,38 +165,32 @@
      <x>0</x>
      <y>0</y>
      <width>600</width>
-     <height>29</height>
+     <height>28</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>&amp;File</string>
     </property>
-    <addaction name="action_File_Manager"/>
-    <addaction name="action_Program_Manager"/>
-    <addaction name="action_Setting"/>
     <addaction name="action_Quit"/>
    </widget>
+   <widget class="QMenu" name="menu_About">
+    <property name="title">
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="action_About"/>
+    <addaction name="actionA_bout_Qt"/>
+    <addaction name="actionAbout_Kindle"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menu_About"/>
   </widget>
   <action name="action_Quit">
    <property name="text">
     <string>&amp;Quit</string>
    </property>
-  </action>
-  <action name="action_File_Manager">
-   <property name="text">
-    <string>&amp;File Manager</string>
-   </property>
-  </action>
-  <action name="action_Program_Manager">
-   <property name="text">
-    <string>&amp;Program Manager</string>
-   </property>
-  </action>
-  <action name="action_Setting">
-   <property name="text">
-    <string>&amp;Setting</string>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
    </property>
   </action>
   <action name="action_Open">
@@ -179,6 +224,21 @@
   <action name="action_Delete">
    <property name="text">
     <string>&amp;Delete</string>
+   </property>
+  </action>
+  <action name="action_About">
+   <property name="text">
+    <string>&amp;About</string>
+   </property>
+  </action>
+  <action name="actionA_bout_Qt">
+   <property name="text">
+    <string>A&amp;bout Qt</string>
+   </property>
+  </action>
+  <action name="actionAbout_Kindle">
+   <property name="text">
+    <string>About &amp;Kindle</string>
    </property>
   </action>
  </widget>

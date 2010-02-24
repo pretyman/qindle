@@ -7,9 +7,14 @@ TEMPLATE = app
 SOURCES += main.cpp \
     mainwindow.cpp \
     fileutil.cpp \
-    programdb.cpp
+    programdb.cpp \
+    aboutkindle.cpp \
+    hwinfo.cpp
 HEADERS += mainwindow.h \
     fileutil.h \
-    programdb.h
-FORMS += mainwindow.ui
+    programdb.h \
+    aboutkindle.h \
+    hwinfo.h
+FORMS += mainwindow.ui \
+    aboutkindle.ui
 RESOURCES += 

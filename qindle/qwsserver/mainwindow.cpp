@@ -18,6 +18,9 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "aboutkindle.h"
+#include "hwinfo.h"
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -35,37 +38,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->treeView->addAction(separatorAct);
     ui->treeView->addAction(ui->action_Delete);
 
+    ui->tabWidget->setCurrentIndex(1);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-void MainWindow::on_action_File_Manager_triggered()
-{
-    ui->treeView->setModel(&model);
-    ui->treeView->setRootIndex(model.index(KINDLE_ROOT));
-    ui->stackedWidget->setCurrentIndex(0);
-    ui->treeView->setFocus();
-}
-
-
-
-void MainWindow::on_action_Program_Manager_triggered()
-{
-    bool ret=progdb.opendb();
-    if (!ret) {
-        QMessageBox::critical(0,tr("System Error"),tr("Cannot open program database!"),QMessageBox::Ok);
-        return;
-     };
-    ui->tableView->setModel(&(progdb.ProgramModel));
-    ui->tableView->setColumnHidden(2,true);
-    ui->tableView->resizeColumnsToContents();
-    ui->tableView->selectRow(0);
-    ui->stackedWidget->setCurrentIndex(1);
-    ui->tableView->setFocus();
-
 }
 
 void MainWindow::on_action_Open_triggered()
@@ -167,7 +145,50 @@ void MainWindow::on_treeView_collapsed(QModelIndex index)
     ui->treeView->resizeColumnToContents(0);
 }
 
-void MainWindow::on_action_Setting_triggered()
+
+void MainWindow::on_tabWidget_currentChanged(int index)
 {
-    ui->stackedWidget->setCurrentIndex(2);
+    bool ret;
+    hwinfo hwinfo;
+    switch(index) {
+    case 0: //file manager
+        ui->treeView->setModel(&model);
+        ui->treeView->setRootIndex(model.index(KINDLE_ROOT));
+        ui->treeView->setFocus();
+        break;
+    case 1: //program manager
+        ret=progdb.opendb();
+        if (!ret) {
+            QMessageBox::critical(0,tr("System Error"),tr("Cannot open program database!"),QMessageBox::Ok);
+            break;
+         };
+        ui->tableView->setModel(&(progdb.ProgramModel));
+        ui->tableView->setColumnHidden(2,true);
+        ui->tableView->resizeColumnsToContents();
+        ui->tableView->selectRow(0);
+        ui->tableView->setFocus();
+        break;
+    case 3:
+        hwinfo.setTable(ui->tableWidget);
+        break;
+
+    }
 }
+
+void MainWindow::on_actionAbout_Kindle_triggered()
+{
+    aboutkindle a;
+    a.exec();
+}
+
+void MainWindow::on_actionA_bout_Qt_triggered()
+{
+    QMessageBox::aboutQt(this,"About Qt");
+}
+
+void MainWindow::on_action_About_triggered()
+{
+    QString text=tr("This project is aimed at porting a Qt embedded framework to Amazon Kindle DX, and porting other useful applications to this framework.\n\nCopyright (C) 2009 Li Miao <lm3783@gmail.com>");
+    QMessageBox::about(this,"About Qindle",text);
+}
+
