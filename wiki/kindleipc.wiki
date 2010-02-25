@@ -10,149 +10,53 @@ Kindle DX使用java作为应用软件平台。java平台的主要优势在于平
 Kindle DX的java平台通过jni提供了dbus的绑定。但Kindle系统中包含大量shell脚本和底层程序，不适合直接使用dbus，所以用了一个名叫lipc的消息系统作为包装。
 lipc包括一系列的以lipc开头的程序：
 
- * lipc-daemon 主守护进程
+ * lipc-daemon 守护进程，详见下文
  * lipc-get-prop
  * lipc-set-prop 读写属性值的程序
  * lipc-send-event
  * lipc-wait-event 发送/接收事件的程序
- * 以及核心：liblipc.so
+ 
+以上程序都是调用liblipc.so完成实际工作。liblipc.so再通过glib binding访问dbus
 
 lipc对外采用纯文本接口，格式如下：
 {{{
 <family name> <property> <value>
-<family name> <function> <arg>
 <family name> <event>
 }}}
 
-完整的属性列表如下：
+lipc反映在dbus上是method和signal两种消息，分别对应上述property和event，具体格式如下：
 {{{
-com.lab126.pmond
-	r 	str	summary
-	w	str	restart
-	w	str	stop
-	w	str	mem_limit
-	w	str	start
-com.lab126.audio
-	rw 	str	logLevel
-	w	int	ThreadUp
-	w	int	Kill
-	rw	int	GstrBufferTime
-	r	int	CmdINSinks
-	w	int	ResetTTS
-	rw	int	GstrLatency
-	r	int	CmdIHeadphoneMax
-	rw	int	Seek
-	rw	int	Volume
-	rw	str	URI
-	r	int	CmdICurrentMax
-	rw	int	Control
-	rw	int	Balance
-	r	int	CmdISpeakerMax
-	rw	int	CmdIVolume
-	rw	int	Chapter
-	rw	str	logMask
-com.lab126.wan
-	w 	int	onDemandNudge
-	r	int	localTimeOffset
-	r	str	logString
-	r	str	radioImsi
-	w	int	captureLogString
-	w	int	factoryTest
-	w	int	stopWan
-	rw	str	logLevel
-	r	str	radioFirmwareVersion
-	w	int	stopFactoryTest
-	rw	int	onDemand
-	r	int	radioInfoIsAvailable
-	r	str	radioRealm
-	r	int	powerState
-	r	int	dataState
-	r	int	peer
-	r	str	radioCertParam2
-	r	int	radioPrlVersion
-	w	int	startWan
-	r	str	radioCertParam1
-	r	str	radioPhoneNumber
-	r	int	serviceState
-	r	str	radioSerialNumber
-	r	int	enoughPower
-	rw	str	logMask
-com.lab126.tts
-	rw 	int	CtrlOpen
-	rw	str	logLevel
-	r	int	Position
-	rw	int	Count
-	rw	int	DbgIOutAudio
-	rw	int	LimitThreshold
-	r	int	State
-	rw	int	CtrlSeek
-	rw	str	TtsSVoice
-	rw	str	DbgSAudioFile
-	r	int	DbgILatency
-	r	int	DbgIInText
-	rw	int	InBufferSize
-	rw	str	DbgSTextFile
-	rw	int	TextToProcess
-	r	int	HeadPosition
-	rw	int	CtrlPlay
-	rw	int	DbgIUpstreamControl
-	r	int	CtrlCurrentBookmark
-	w	int	CtrlBookmark
-	rw	str	TtsSReduction
-	rw	int	TtsICharType
-	rw	str	TtsSEncoding
-	r	int	DbgIFlags
-	rw	int	TtsISpeed
-	rw	int	DbgIDownstreamControl
-	rw	int	TtsIPitch
-	rw	str	TtsSLanguage
-	rw	int	DbgIBookmark
-	rw	str	logMask
-com.lab126.system
-	r 	str	waveformversion
-	r	str	orientation
-	r	str	version
-	r	str	usid
-	r	str	boardid
-	w	str	sendEvent
-com.lab126.powerd
-	rw 	str	logLevel
-	r	int	battLevel
-	w	int	wakeUp
-	w	int	deferSuspend
-	w	int	rtcWakeup
-	r	str	state
-	w	int	touchScreenSaverTimeout
-	rw	int	preventScreenSaver
-	rw	str	logMask
-	w	int	suspendGrace
-	r	str	status
-	r	int	isCharging
-com.lab126.retryd
-com.lab126.framework
-	rw 	str	logLevel
-	w	int	logContent
-	rw	str	logMask
-com.lab126.volumd
-	rw 	str	logLevel
-	r	int	mmcTotalSpace
-	r	int	userstoreIsAvailable
-	r	int	driveModeState
-	r	int	mmcIsAvailable
-	r	int	userstoreTotalSpace
-	w	int	userstoreReadyToUnMount
-	rw	int	useUsbForNetwork
-	r	int	mmcFreeSpace
-	r	int	userstoreFreeSpace
-	rw	str	logMask
-}}}
-尚无事件的列表。
+# dbus-send --system --type=method_call --print-reply --dest=com.lab126.audio /default com.lab126.setURIStr string:"file:///mnt/us"
+method return sender=:1.14 -> dest=:1.90
+   uint32 0
 
-除消息传递外，lipc还提供一些服务，包括：
+#dbus-send --system --type=method_call --print-reply --dest=com.lab126.audio /default com.lab126.getURIStr                         
+method return sender=:1.14 -> dest=:1.91
+   uint32 0
+   string "file:///mnt/us"
+
+其中最后部分的组成规律是[get|set][property name][Str|int]
+返回值为0表示成功，2表示语法错误，8表示无此属性（最可能原因是变量类型错误)
+
+signal sender=:1.2 -> dest=(null destination) path=/default; interface=com.lab126.powerd; member=goingToScreenSaver
+
+signal sender=:1.2 -> dest=(null destination) path=/default; interface=com.lab126.powerd; member=outOfScreenSaver
+   int32 1
+
+其中部分事件带返回值。
+
+}}}
+
+其中com.lab126.audio Control属性：
+|| 1 || 播放 ||
+|| 2 || 暂停 ||
+|| 3 || 停止 ||
+|| 4 || 程序正在执行（只读） ||
+
+lipc-daemon并不负责消息传递，而是提供服务：
 
  * 将/proc中的部分内容映射到lipc
  * 使用脚本处理简单事件
- * 调用pmond实现进程管理
 
 另外一套_疑似_消息传递系统是tphserver。相关代码在内核态和用户态都存在，_推测_是用于传递内核事件。
 
