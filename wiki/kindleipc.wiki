@@ -35,7 +35,7 @@ method return sender=:1.14 -> dest=:1.91
    uint32 0
    string "file:///mnt/us"
 
-其中最后部分的组成规律是[get|set][property name][Str|int]
+其中最后部分的组成规律是[get|set][property name][Str|Int]
 返回值为0表示成功，2表示语法错误，8表示无此属性（最可能原因是变量类型错误)
 
 signal sender=:1.2 -> dest=(null destination) path=/default; interface=com.lab126.powerd; member=goingToScreenSaver
