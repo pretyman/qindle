@@ -47,11 +47,16 @@ signal sender=:1.2 -> dest=(null destination) path=/default; interface=com.lab12
 
 }}}
 
-其中com.lab126.audio Control属性：
+其中com.lab126.audio Control既用来发送命令，也用来表示当前状态
+命令：
 || 1 || 播放 ||
 || 2 || 暂停 ||
 || 3 || 停止 ||
-|| 4 || 程序正在执行（只读） ||
+状态：
+|| 1 || 播放完毕 ||
+|| 2 || 初始化完成 ||
+|| 3 || 暂停 ||
+|| 4 || 正在播放 ||
 
 lipc-daemon并不负责消息传递，而是提供服务：
 
