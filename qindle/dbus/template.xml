@@ -1,0 +1,16 @@
+    <method name="set++++Str">
+      <arg name="++++" type="s" direction="in"/>
+      <arg name="return" type="i" direction="out"/>
+    </method>
+    <method name="get++++Str">
+      <arg name="return" type="i" direction="out"/>
+      <arg name="++++" type="s" direction="out"/>
+    </method>
+    <method name="set++++Int">
+      <arg name="++++" type="i" direction="in"/>
+      <arg name="return" type="i" direction="out"/>
+    </method>
+    <method name="get++++Int">
+      <arg name="return" type="i" direction="out"/>
+      <arg name="++++" type="i" direction="out"/>
+    </method>

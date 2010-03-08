@@ -1,0 +1,5 @@
+signal sender=:1.3 -> dest=(null destination) path=/default; interface=com.lab126.powerd; member=goingToScreenSaver
+signal sender=:1.3 -> dest=(null destination) path=/default; interface=com.lab126.powerd; member=outOfScreenSaver
+   int32 1
+signal sender=:1.65 -> dest=(null destination) path=/default; interface=com.lab126.hal; member=audioHS
+   int32 1
