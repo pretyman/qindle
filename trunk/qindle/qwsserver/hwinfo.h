@@ -1,7 +1,7 @@
 #ifndef HWINFO_H
 #define HWINFO_H
 
-#include <QObject>
+
 #include <QString>
 #include <QStringList>
 #include <QProcess>
@@ -9,9 +9,9 @@
 #include <QTableWidgetItem>
 #include <QTableWidget>
 
-class hwinfo : public QObject
+class hwinfo
 {
-    Q_OBJECT
+
 public:
     hwinfo();
     QString getInfo(QString name);
@@ -21,7 +21,7 @@ private:
     QProcess process;
     QString getbyProgram(QString name, QStringList args);
     QString getbyFile(QString filename);
-    QString getbyLipc(QString publisher, QString property, int type);
+    QString getbyLipc(QString publisher, QString property);
 };
 
 #endif // HWINFO_H

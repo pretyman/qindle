@@ -1,6 +1,10 @@
 #include "hwinfo.h"
 #include <QDate>
 #include <QTime>
+#include <QDBusInterface>
+#include <QDBusMessage>
+#include <QList>
+#include <QVariant>
 
 hwinfo::hwinfo()
 {   
@@ -14,20 +18,20 @@ QString hwinfo::getInfo(QString name)
     else if (name=="Time")
         value=QTime::currentTime().toString();
     else if (name=="Battery")
-        value=getbyLipc("com.lab126.powerd","battLevel",1);
+        value=getbyLipc("com.lab126.powerd","getbattLevelInt");
 
     else if (name=="Wireless")
-        value=getbyLipc("com.lab126.wan","powerState",1);
+        value=getbyLipc("com.lab126.wan","getpowerStateInt");
     else if (name=="Temperature")
         value=getbyFile("/proc/eink_fb/temperature");
     else if (name=="Free Space")
-        value=getbyLipc("com.lab126.volumd","userstoreFreeSpace",1);
+        value=getbyLipc("com.lab126.volumd","getuserstoreFreeSpaceInt");
     else if (name=="Waveform Version")
-        value=getbyLipc("com.lab126.system","waveformversion",0);
+        value=getbyLipc("com.lab126.system","getwaveformversionStr");
     else if (name=="Version")
-        value=getbyLipc("com.lab126.system","version",0);
+        value=getbyLipc("com.lab126.system","getversionStr");
     else if (name=="USID")
-        value=getbyLipc("com.lab126.system","usid",0);
+        value=getbyLipc("com.lab126.system","getusidStr");
     else if (name=="Charge In Percent")
         value=getbyProgram("gasgauge-info",QStringList("-s"));
     else if (name=="battery voltage")
@@ -59,15 +63,17 @@ void hwinfo::setTable(QTableWidget* table)
         table->resizeColumnToContents(0);
     }
 }
-QString hwinfo::getbyLipc(QString publisher, QString property, int type)
+QString hwinfo::getbyLipc(QString publisher, QString property)
 {
-    QStringList args;
-    if (type)
-        args << "-i";
-    else
-        args << "-s";
-    args << publisher << property;
-    return getbyProgram("lipc-get-prop",args);
+    QDBusInterface remoteApp( publisher, "/default", "com.lab126", QDBusConnection::systemBus());
+    if (!remoteApp.isValid()) return "Error1";
+    QDBusMessage result=remoteApp.call(property);
+    QList <QVariant> list=result.arguments();
+    if(list.count()==1) {
+        return "Error2";
+    } else {
+        return list[1].toString();
+    }
 }
 QString hwinfo::getbyProgram(QString name, QStringList args)
 {

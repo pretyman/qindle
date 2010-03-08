@@ -1,7 +1,7 @@
 # -------------------------------------------------
 # Project created by QtCreator 2009-10-08T13:58:12
 # -------------------------------------------------
-QT += sql
+QT += sql dbus
 TARGET = qwsserver
 TEMPLATE = app
 SOURCES += main.cpp \
