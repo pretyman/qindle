@@ -36,10 +36,10 @@ public:
     QString Filename;
     QString Distname;
     bool isDir;
-
+    int exec(QString Program, QStringList Argument);
 private:
     int msgbox(int mode);
-    int exec(QString Program, QStringList Argument);
+
 };
 
 #endif // FILEUTIL_H

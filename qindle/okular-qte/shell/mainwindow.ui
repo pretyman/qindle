@@ -27,23 +27,6 @@
     <property name="margin">
      <number>0</number>
     </property>
-    <item>
-     <widget class="QScrollArea" name="scrollArea">
-      <property name="widgetResizable">
-       <bool>true</bool>
-      </property>
-      <widget class="QWidget" name="scrollAreaWidgetContents">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>596</width>
-         <height>343</height>
-        </rect>
-       </property>
-      </widget>
-     </widget>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -52,7 +35,7 @@
      <x>0</x>
      <y>0</y>
      <width>600</width>
-     <height>29</height>
+     <height>28</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -151,6 +134,7 @@
     <addaction name="action_Contents"/>
     <addaction name="action_Thumbnail"/>
     <addaction name="menu_Bookmark"/>
+    <addaction name="action_Index"/>
    </widget>
    <widget class="QMenu" name="menu_Setting">
     <property name="title">
@@ -432,6 +416,11 @@
   <action name="actionF_ind">
    <property name="text">
     <string>F&amp;ind</string>
+   </property>
+  </action>
+  <action name="action_Index">
+   <property name="text">
+    <string>&amp;Index</string>
    </property>
   </action>
  </widget>
