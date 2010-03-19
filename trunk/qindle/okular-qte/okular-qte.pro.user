@@ -46,7 +46,7 @@
  </data>
  <data>
   <variable>activebuildconfiguration</variable>
-  <value type="QString">Debug</value>
+  <value type="QString">Release</value>
  </data>
  <data>
   <variable>buildConfiguration-Debug</variable>
@@ -63,6 +63,7 @@
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Release</value>
    <value key="QtVersionId" type="int">0</value>
+   <value key="ToolChain" type="int">0</value>
    <value key="addQDumper" type=""></value>
    <value key="buildConfiguration" type="int">0</value>
   </valuemap>
@@ -72,10 +73,10 @@
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList">
-    <value type="QString">CONFIG_PROTECT=/usr/share/X11/xkb /usr/share/config</value>
-    <value type="QString">CONFIG_PROTECT_MASK=/etc/sandbox.d /etc/env.d/java/ /etc/udev/rules.d /etc/fonts/fonts.conf /etc/gconf /etc/terminfo /etc/ca-certificates.conf /etc/revdep-rebuild</value>
+    <value type="QString">CONFIG_PROTECT=/usr/share/X11/xkb</value>
+    <value type="QString">CONFIG_PROTECT_MASK=/etc/sandbox.d /etc/env.d/java/ /etc/fonts/fonts.conf /etc/gconf /etc/terminfo /etc/ca-certificates.conf /etc/revdep-rebuild</value>
     <value type="QString">CVS_RSH=ssh</value>
-    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-Eob0TGGmoY,guid=ba644a33d160490d62f0af274b7ca13a</value>
+    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-RnnTsemJcE,guid=daf540238bd6f617172b09a24ba04aae</value>
     <value type="QString">DISPLAY=:0.0</value>
     <value type="QString">EDITOR=/bin/nano</value>
     <value type="QString">EMBOSS_ACDROOT=/usr/share/EMBOSS/acd</value>
@@ -93,7 +94,6 @@
     <value type="QString">JAVA_HOME=/etc/java-config-2/current-system-vm</value>
     <value type="QString">JDK_HOME=/etc/java-config-2/current-system-vm</value>
     <value type="QString">LC_ALL=zh_CN.UTF-8</value>
-    <value type="QString">LD_LIBRARY_PATH=/opt/qtcreator-1.3.0/lib/qtcreator:</value>
     <value type="QString">LESS=-R -M --shift 5</value>
     <value type="QString">LESSOPEN=|lesspipe.sh %s</value>
     <value type="QString">LIBGLADE_MODULE_PATH=:/usr/lib/libglade/2.0</value>
@@ -108,18 +108,20 @@
     <value type="QString">PWD=/home/nemo</value>
     <value type="QString">QTDIR=/usr/share/qt4</value>
     <value type="QString">QT_IM_MODULE=xim</value>
-    <value type="QString">SESSION_MANAGER=local/Nautilus:@/tmp/.ICE-unix/20688,unix/Nautilus:/tmp/.ICE-unix/20688</value>
+    <value type="QString">SESSION_MANAGER=local/Nautilus:@/tmp/.ICE-unix/4712,unix/Nautilus:/tmp/.ICE-unix/4712</value>
     <value type="QString">SHELL=/bin/bash</value>
     <value type="QString">SHLVL=4</value>
-    <value type="QString">SSH_AGENT_PID=20675</value>
-    <value type="QString">SSH_AUTH_SOCK=/tmp/ssh-zJIqL20660/agent.20660</value>
+    <value type="QString">SSH_AGENT_PID=4698</value>
+    <value type="QString">SSH_AUTH_SOCK=/tmp/ssh-xlCItr4659/agent.4659</value>
     <value type="QString">TERM=linux</value>
     <value type="QString">USER=nemo</value>
+    <value type="QString">VBOX_APP_HOME=/opt/VirtualBox</value>
     <value type="QString">WINDOWPATH=7</value>
     <value type="QString">XAUTHORITY=/home/nemo/.Xauthority</value>
     <value type="QString">XDG_CONFIG_DIRS=/etc/xdg</value>
     <value type="QString">XDG_DATA_DIRS=/usr/local/share:/usr/share:/usr/share</value>
     <value type="QString">XMODIFIERS=@im=ibus</value>
+    <value type="QString">_=/usr/bin/xfce4-session</value>
    </valuelist>
    <valuelist key="abstractProcess.arguments" type="QVariantList">
     <value type="QString">/mnt/win/project/kindle/qindle/qindle/okular-qte/okular-qte.pro</value>
@@ -138,10 +140,10 @@
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Debug</value>
    <valuelist key="abstractProcess.Environment" type="QVariantList">
-    <value type="QString">CONFIG_PROTECT=/usr/share/X11/xkb /usr/share/config</value>
-    <value type="QString">CONFIG_PROTECT_MASK=/etc/sandbox.d /etc/env.d/java/ /etc/udev/rules.d /etc/fonts/fonts.conf /etc/gconf /etc/terminfo /etc/ca-certificates.conf /etc/revdep-rebuild</value>
+    <value type="QString">CONFIG_PROTECT=/usr/share/X11/xkb</value>
+    <value type="QString">CONFIG_PROTECT_MASK=/etc/sandbox.d /etc/env.d/java/ /etc/fonts/fonts.conf /etc/gconf /etc/terminfo /etc/ca-certificates.conf /etc/revdep-rebuild</value>
     <value type="QString">CVS_RSH=ssh</value>
-    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-Eob0TGGmoY,guid=ba644a33d160490d62f0af274b7ca13a</value>
+    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-RnnTsemJcE,guid=daf540238bd6f617172b09a24ba04aae</value>
     <value type="QString">DISPLAY=:0.0</value>
     <value type="QString">EDITOR=/bin/nano</value>
     <value type="QString">EMBOSS_ACDROOT=/usr/share/EMBOSS/acd</value>
@@ -159,7 +161,6 @@
     <value type="QString">JAVA_HOME=/etc/java-config-2/current-system-vm</value>
     <value type="QString">JDK_HOME=/etc/java-config-2/current-system-vm</value>
     <value type="QString">LC_ALL=zh_CN.UTF-8</value>
-    <value type="QString">LD_LIBRARY_PATH=/opt/qtcreator-1.3.0/lib/qtcreator:</value>
     <value type="QString">LESS=-R -M --shift 5</value>
     <value type="QString">LESSOPEN=|lesspipe.sh %s</value>
     <value type="QString">LIBGLADE_MODULE_PATH=:/usr/lib/libglade/2.0</value>
@@ -174,18 +175,20 @@
     <value type="QString">PWD=/home/nemo</value>
     <value type="QString">QTDIR=/usr/share/qt4</value>
     <value type="QString">QT_IM_MODULE=xim</value>
-    <value type="QString">SESSION_MANAGER=local/Nautilus:@/tmp/.ICE-unix/20688,unix/Nautilus:/tmp/.ICE-unix/20688</value>
+    <value type="QString">SESSION_MANAGER=local/Nautilus:@/tmp/.ICE-unix/4712,unix/Nautilus:/tmp/.ICE-unix/4712</value>
     <value type="QString">SHELL=/bin/bash</value>
     <value type="QString">SHLVL=4</value>
-    <value type="QString">SSH_AGENT_PID=20675</value>
-    <value type="QString">SSH_AUTH_SOCK=/tmp/ssh-zJIqL20660/agent.20660</value>
+    <value type="QString">SSH_AGENT_PID=4698</value>
+    <value type="QString">SSH_AUTH_SOCK=/tmp/ssh-xlCItr4659/agent.4659</value>
     <value type="QString">TERM=linux</value>
     <value type="QString">USER=nemo</value>
+    <value type="QString">VBOX_APP_HOME=/opt/VirtualBox</value>
     <value type="QString">WINDOWPATH=7</value>
     <value type="QString">XAUTHORITY=/home/nemo/.Xauthority</value>
     <value type="QString">XDG_CONFIG_DIRS=/etc/xdg</value>
     <value type="QString">XDG_DATA_DIRS=/usr/local/share:/usr/share:/usr/share</value>
     <value type="QString">XMODIFIERS=@im=ibus</value>
+    <value type="QString">_=/usr/bin/xfce4-session</value>
    </valuelist>
    <value key="abstractProcess.IgnoreReturnValue" type="bool">false</value>
    <valuelist key="abstractProcess.arguments" type="QVariantList">
@@ -280,6 +283,10 @@
   <variable>buildconfiguration-Release-cleanstep0</variable>
   <valuemap type="QVariantMap">
    <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">Release</value>
+   <value key="cleanConfig" type="bool">true</value>
+   <valuelist key="makeargs" type="QVariantList">
+    <value type="QString">clean</value>
+   </valuelist>
   </valuemap>
  </data>
  <data>

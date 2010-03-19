@@ -26,6 +26,7 @@
 #include <QDirModel>
 #include "fileutil.h"
 #include "programdb.h"
+#include "menuevent.h"
 
 #define KINDLE_ROOT "/mnt/us"
 #define STYLESHEET "/usr/local/share/qindle/eink.qss"
@@ -51,7 +52,7 @@ private:
     QPoint MousePos;
     QModelIndex clipindex;
     bool rmori;
-
+    menuevent* mevent;
 private slots:
     void on_actionAbout_Kindle_triggered();
     void on_action_About_triggered();
@@ -66,7 +67,8 @@ private slots:
     void on_action_Open_triggered();
     void on_treeView_collapsed(QModelIndex index);
     void on_treeView_expanded(QModelIndex index);
-
+    void screensaver();
+    void quitscreensaver();
 };
 
 #endif // MAINWINDOW_H

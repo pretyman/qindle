@@ -1,7 +1,8 @@
 # -------------------------------------------------
 # Project created by QtCreator 2009-10-08T13:58:12
 # -------------------------------------------------
-QT += sql dbus
+QT += sql \
+    dbus
 TARGET = qwsserver
 TEMPLATE = app
 SOURCES += main.cpp \
@@ -9,12 +10,14 @@ SOURCES += main.cpp \
     fileutil.cpp \
     programdb.cpp \
     aboutkindle.cpp \
-    hwinfo.cpp
+    hwinfo.cpp \
+    menuevent.cpp
 HEADERS += mainwindow.h \
     fileutil.h \
     programdb.h \
     aboutkindle.h \
-    hwinfo.h
+    hwinfo.h \
+    menuevent.h
 FORMS += mainwindow.ui \
     aboutkindle.ui
 RESOURCES += 

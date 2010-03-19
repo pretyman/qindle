@@ -21,6 +21,7 @@
 #include "aboutkindle.h"
 #include "hwinfo.h"
 #include <QMessageBox>
+#include <QDBusConnection>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -38,12 +39,20 @@ MainWindow::MainWindow(QWidget *parent)
     ui->treeView->addAction(separatorAct);
     ui->treeView->addAction(ui->action_Delete);
 
+    mevent=new menuevent();
+    ui->treeView->installEventFilter(mevent);
+
     ui->tabWidget->setCurrentIndex(1);
+
+    //DBus signal connection
+    QDBusConnection::systemBus().connect(QString(), QString(), "com.lab126.powerd", "goingToScreenSaver", this,SLOT(screensaver()));
+    QDBusConnection::systemBus().connect(QString(), QString(), "com.lab126.powerd", "outOfScreenSaver", this,SLOT(quitscreensaver()));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete mevent;
 }
 
 void MainWindow::on_action_Open_triggered()
@@ -192,3 +201,14 @@ void MainWindow::on_action_About_triggered()
     QMessageBox::about(this,"About Qindle",text);
 }
 
+void MainWindow::screensaver()
+{
+    QStringList list;
+    list << "-s" << "5";
+    fileutil.exec("/usr/sbin/eips",list);
+}
+
+void MainWindow::quitscreensaver()
+{
+    this->repaint();
+}
