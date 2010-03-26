@@ -23,7 +23,7 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout">
     <property name="margin">
      <number>0</number>
     </property>
@@ -64,9 +64,7 @@
     <addaction name="menu_Export_As"/>
     <addaction name="separator"/>
     <addaction name="action_Properties"/>
-    <addaction name="actionE_mbedded_Files"/>
     <addaction name="separator"/>
-    <addaction name="actionRe_load"/>
     <addaction name="actionE_xit"/>
    </widget>
    <widget class="QMenu" name="menu_View">
@@ -77,9 +75,11 @@
      <property name="title">
       <string>&amp;View Mode</string>
      </property>
-     <addaction name="action_Single_Page"/>
-     <addaction name="action_Double_Page"/>
-     <addaction name="action_Overview"/>
+     <addaction name="actionFit_Width_2"/>
+     <addaction name="actionFit_Height"/>
+     <addaction name="actionSplit_Half"/>
+     <addaction name="actionSplit_One_Third"/>
+     <addaction name="actionSplit_One_Sixth"/>
     </widget>
     <widget class="QMenu" name="menuO_rientation">
      <property name="title">
@@ -93,12 +93,9 @@
     <addaction name="actionZoom_Out"/>
     <addaction name="action_Zoom"/>
     <addaction name="separator"/>
-    <addaction name="actionFit_Width"/>
-    <addaction name="actionFit_Page"/>
     <addaction name="action_Trim_Margens"/>
     <addaction name="separator"/>
     <addaction name="menu_View_Mode"/>
-    <addaction name="action_Continuous"/>
     <addaction name="menuO_rientation"/>
    </widget>
    <widget class="QMenu" name="menu_Goto">
@@ -109,32 +106,20 @@
     <addaction name="action_Privous_Page"/>
     <addaction name="action_First_Page"/>
     <addaction name="action_Last_Page"/>
+    <addaction name="action_Goto_Page"/>
     <addaction name="separator"/>
     <addaction name="actionF_orward"/>
     <addaction name="action_Backward"/>
-    <addaction name="separator"/>
-    <addaction name="action_Goto_Page"/>
-    <addaction name="separator"/>
-    <addaction name="actionF_ind"/>
    </widget>
    <widget class="QMenu" name="menu_Navagation">
     <property name="title">
      <string>&amp;Navagation</string>
     </property>
-    <widget class="QMenu" name="menu_Bookmark">
-     <property name="title">
-      <string>&amp;Bookmark</string>
-     </property>
-     <addaction name="action_Next_Bookmark"/>
-     <addaction name="action_Privous_Bookmark"/>
-     <addaction name="action_Add_Bookmark"/>
-     <addaction name="separator"/>
-     <addaction name="action_Shoe_Bookmarks"/>
-    </widget>
     <addaction name="action_Contents"/>
     <addaction name="action_Thumbnail"/>
-    <addaction name="menu_Bookmark"/>
     <addaction name="action_Index"/>
+    <addaction name="action_Bookmark"/>
+    <addaction name="actionF_ind"/>
    </widget>
    <widget class="QMenu" name="menu_Setting">
     <property name="title">
@@ -143,7 +128,6 @@
     <addaction name="actionSpeak_Current_Page"/>
     <addaction name="actionS_top_speaking"/>
     <addaction name="separator"/>
-    <addaction name="actionConfigure_Backend"/>
     <addaction name="actionConfigure_Okular"/>
    </widget>
    <widget class="QMenu" name="menu_Help">
@@ -154,12 +138,18 @@
     <addaction name="actionAbout_Okular"/>
     <addaction name="actionAbout_Qt"/>
    </widget>
+   <widget class="QMenu" name="menu_Backend">
+    <property name="title">
+     <string>&amp;Backend</string>
+    </property>
+   </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Goto"/>
    <addaction name="menu_View"/>
    <addaction name="menu_Navagation"/>
    <addaction name="menu_Setting"/>
    <addaction name="menu_Help"/>
+   <addaction name="menu_Backend"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="action_Open">
@@ -292,7 +282,7 @@
   </action>
   <action name="action_Trim_Margens">
    <property name="checkable">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="text">
     <string>&amp;Trim Margens</string>
@@ -395,7 +385,7 @@
   </action>
   <action name="actionConfigure_Okular">
    <property name="text">
-    <string>Configure &amp;Okular</string>
+    <string>&amp;Configure</string>
    </property>
   </action>
   <action name="actionAbout_Backend">
@@ -421,6 +411,46 @@
   <action name="action_Index">
    <property name="text">
     <string>&amp;Index</string>
+   </property>
+  </action>
+  <action name="action_Bookmark">
+   <property name="text">
+    <string>&amp;Bookmark</string>
+   </property>
+  </action>
+  <action name="action">
+   <property name="text">
+    <string>适合宽度</string>
+   </property>
+  </action>
+  <action name="action_2">
+   <property name="text">
+    <string>适合高度</string>
+   </property>
+  </action>
+  <action name="actionFit_Width_2">
+   <property name="text">
+    <string>Fit Width</string>
+   </property>
+  </action>
+  <action name="actionFit_Height">
+   <property name="text">
+    <string>Fit Height</string>
+   </property>
+  </action>
+  <action name="actionSplit_Half">
+   <property name="text">
+    <string>Split Half</string>
+   </property>
+  </action>
+  <action name="actionSplit_One_Third">
+   <property name="text">
+    <string>Split Quarter</string>
+   </property>
+  </action>
+  <action name="actionSplit_One_Sixth">
+   <property name="text">
+    <string>Split One Sixth</string>
    </property>
   </action>
  </widget>
