@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include "controller.h"
 namespace Ui {
     class MainWindow;
 }
@@ -18,6 +18,11 @@ protected:
 
 private:
     Ui::MainWindow *ui;
+    okular::Controller* controller;
+
+private slots:
+    void on_action_Next_Page_triggered();
+    void on_action_Open_triggered();
 };
 
 #endif // MAINWINDOW_H
