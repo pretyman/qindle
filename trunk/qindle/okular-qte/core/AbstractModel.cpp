@@ -1,4 +1,4 @@
-/* 功能：将EPUB中的内容转换成webkit需要的回应。
+/*
  * Copyright (C) 2010 Li Miao <lm3783@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -16,27 +16,15 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include "AbstractModel.h"
+#include <QObject>
 
-#ifndef EPUBREPLY_H
-#define EPUBREPLY_H
+using namespace okular;
 
-#include <QNetworkReply>
-#include "quazip.h"
-#include "quazipfile.h"
-
-class EPUBReply : public QNetworkReply
+void AbstractModel::initTOC()
 {
-    Q_OBJECT
-public:
-    EPUBReply(QObject *parent, const QNetworkRequest &req, const QNetworkAccessManager::Operation op, QuaZip* zipfile, QString rootpath);
-    ~EPUBReply();
-
-    virtual void abort();
-    virtual qint64 readData(char *data, qint64 maxlen);
-    virtual qint64 bytesAvailable () const;
-private:
-    QuaZipFile* m_file;
-    qint64 bytesavail;
-};
-
-#endif // EPUBREPLY_H
+    m_TOCModel.setColumnCount(3);
+    m_TOCModel.setHeaderData(0, Qt::Horizontal, QObject::tr("Name"));
+    m_TOCModel.setHeaderData(1, Qt::Horizontal, QObject::tr("URL"));
+    m_TOCModel.setHeaderData(2, Qt::Horizontal, QObject::tr("Page"));
+}

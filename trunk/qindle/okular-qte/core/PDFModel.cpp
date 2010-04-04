@@ -1,4 +1,24 @@
+/*
+ * Copyright (C) 2010 Li Miao <lm3783@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+
 #include "PDFModel.h"
+#include <QObject>
+#include <QStack>
 
 using namespace okular;
 
@@ -17,13 +37,6 @@ static fz_matrix pdfapp_viewctm(pdfapp_t *app)
         return ctm;
 }
 
-enum panning
-{
-        DONT_PAN = 0,
-        PAN_TO_TOP,
-        PAN_TO_BOTTOM
-};
-
 PDFModel::PDFModel()
 {
     app=new pdfapp_t;
@@ -32,7 +45,7 @@ PDFModel::PDFModel()
     error = fz_newrenderer(&app->rast, pdf_devicergb, 0, 1024 * 512);
     if (error)
             pdfapp_error(app, error);
-
+    pageRotate=0;
     app->zoom = 1.0;
 }
 PDFModel::~PDFModel()
@@ -43,13 +56,12 @@ PDFModel::~PDFModel()
 int PDFModel::open(QString filename)
 {
     fz_obj *obj;
-    char *password = "";
 
     /*
      * Open PDF and load xref table
      */
 
-    app->filename = filename.toAscii().data();
+    app->filename = filename.toLocal8Bit().data();
 
     app->xref = pdf_newxref();
     error = pdf_loadxref(app->xref, app->filename);
@@ -72,17 +84,13 @@ int PDFModel::open(QString filename)
 
     if (pdf_needspassword(app->xref))
     {
-            int okay = pdf_authenticatepassword(app->xref, password);
-            while (!okay)
-            {
+        char* password = this->Password.toLocal8Bit().data();
+        if (!password)
+            exit(1);
+        int okay = pdf_authenticatepassword(app->xref, password);
+        if (!okay)
+            qWarning("Invalid password.");
 
-                password = this->Password.toAscii().data();
-                    if (!password)
-                            exit(1);
-                    okay = pdf_authenticatepassword(app->xref, password);
-                    if (!okay)
-                            qWarning("Invalid password.");
-            }
     }
 
     /*
@@ -185,9 +193,26 @@ int PDFModel::getTotalPage()
 
 QImage PDFModel::getCurrentImage(Qt::AspectRatioMode mode)
 {
-    app->winh=ViewSize.height();
-    app->winw=ViewSize.width();
-    this->pdf_showpage(1,1);
+    app->rotate=pageRotate;
+    this->pdf_showpage(1,0);
+    float winh=ViewSize.height();
+    float winw=ViewSize.width();
+    float pageh=(app->page->mediabox.y1 - app->page->mediabox.y0);
+    float pagew=(app->page->mediabox.x1 - app->page->mediabox.x0);
+
+    if(mode==Qt::KeepAspectRatioByExpanding) {
+        if(winh / winw < pageh / pagew)
+            app->zoom=winw / pagew;
+        else
+            app->zoom=winh / pageh;
+    } else {
+        if(winh / winw < pageh / pagew)
+            app->zoom=winh / pageh;
+        else
+            app->zoom=winw / pagew;
+    }
+
+    this->pdf_showpage(0,1);
     return QImage(app->image->samples+1, app->image->w, app->image->h, QImage::Format_ARGB32_Premultiplied).rgbSwapped();
 }
 
@@ -234,4 +259,46 @@ void PDFModel::pdf_showpage(int loadpage, int drawpage)
 
     //pdfapp_panview(app, app->panx, app->pany);
 
+}
+
+int PDFModel::getTOC()
+{
+    AbstractModel::initTOC();
+    //the root item
+    QStandardItem* currentitem=new QStandardItem("Index");
+    m_TOCModel.appendRow(currentitem);
+    if(!(app->outline))
+        return -1;
+    QStandardItem* nameitem;
+    QStandardItem* pageitem;
+    QStack<pdf_outline*> stack;
+    int page, i;
+    pdf_outline* outline=app->outline;
+
+    do {
+        nameitem=new QStandardItem(QString::fromUtf8(outline->title));
+        page=pdf_findpageobject(app->xref, outline->link->dest);
+        pageitem=new QStandardItem(QString::number(page));
+        i=currentitem->rowCount();
+        currentitem->setChild(i,0,nameitem);
+        currentitem->setChild(i,2,pageitem);
+
+        //goto the child
+        if(outline->count) {
+            stack.push(outline);
+            outline=outline->child;
+            currentitem=nameitem;
+            continue;
+        }
+        while(!(outline->next)) {
+            if(!(stack.isEmpty())) {
+                //goto parent
+                outline=stack.pop();
+                currentitem=currentitem->parent();
+            } else
+                break;
+        }
+        outline=outline->next;
+    } while(outline);
+    return 0;
 }

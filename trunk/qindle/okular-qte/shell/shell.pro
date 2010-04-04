@@ -5,18 +5,30 @@ QT += sql \
     webkit \
     network \
     xml
-
 TARGET = okular-qte
 TEMPLATE = app
 SOURCES += main.cpp \
-    mainwindow.cpp
-HEADERS += mainwindow.h
-FORMS += mainwindow.ui
-
-LIBS += -L../core -lcore
+    mainwindow.cpp \
+    indexviewer.cpp \
+    menuevent.cpp
+HEADERS += mainwindow.h \
+    indexviewer.h \
+    menuevent.h
+FORMS += mainwindow.ui \
+    indexviewer.ui
+LIBS += -L../core \
+    -lcore
 INCLUDEPATH += ../core
 DEPENDPATH += ../core
-
-LIBS += -L../lib -ldjvulibre -lmupdf -lfitz -lfitzdraw -lcmaps -lfonts -lchm -lquazip
-
+LIBS += -L../lib \
+    -ldjvulibre \
+    -lmupdf \
+    -lfitz \
+    -lfitzdraw \
+    -lcmaps \
+    -lfonts \
+    -lchm \
+    -lquazip \
+    -ljbig2dec \
+    -lopenjpeg
 LIBS += -ljpeg

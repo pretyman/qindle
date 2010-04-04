@@ -32,7 +32,7 @@ struct pdfapp_s
 	int histlen;
 
 	/* window system sizes */
-	int winw, winh;
+//	int winw, winh;
 //	int scrw, scrh;
 //	int shrinkwrap;
 

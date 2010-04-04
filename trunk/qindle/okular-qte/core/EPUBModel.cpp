@@ -1,6 +1,25 @@
+/*
+ * Copyright (C) 2010 Li Miao <lm3783@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+
 #include "EPUBModel.h"
 #include "epubreply.h"
 #include <QXmlStreamReader>
+#include <QStandardItem>
 
 using namespace okular;
 
@@ -12,6 +31,7 @@ EPUBModel::EPUBModel()
 
 EPUBModel::~EPUBModel()
 {
+
     delete m_zip;
 }
 
@@ -61,7 +81,16 @@ void EPUBModel::setPageByName(QString name)
 
 void EPUBModel::setPageByNo(int page)
 {
+    if(page<0)
+        page=0;
+    else if(page>=Spine.count())
+        page=Spine.count()-1;
     currentPage=page;
+}
+
+int EPUBModel::getTotalPage()
+{
+    return Spine.count();
 }
 
 int EPUBModel::init()
@@ -113,5 +142,46 @@ int EPUBModel::init()
     ocfreader.clear();
     ocffile.close();
 
+    return 0;
+}
+
+int EPUBModel::getTOC()
+{
+    QString tocfile=Manifest.value(tocID);
+    if(!(m_zip->setCurrentFile(opfpath+tocfile)))
+        return -1;
+    QuaZipFile mytoc(m_zip);
+    if(!(mytoc.open(QIODevice::ReadOnly))) {
+        qWarning("Error number %d", mytoc.getZipError());
+        return -1;
+    }
+    AbstractModel::initTOC();
+    //the root item
+    QStandardItem* currentitem=new QStandardItem(tr("Index"));
+    QStandardItem* newitem;
+    QStandardItem* tempitem;
+    int i=0;
+    m_TOCModel.appendRow(currentitem);
+    QXmlStreamReader reader(&mytoc);
+    for(;!(reader.atEnd());reader.readNextStartElement()){
+        if(reader.isStartElement()) {
+            if(reader.name()=="navPoint") {
+                newitem=new QStandardItem();
+                tempitem=new QStandardItem();
+                i=currentitem->rowCount();
+                currentitem->setChild(i,0,newitem);
+                currentitem->setChild(i,1,tempitem);
+                currentitem=newitem;
+            } else if(reader.name()=="text") {
+                newitem->setText(reader.readElementText());
+            } else if(reader.name()=="content") {
+                tempitem->setText(reader.attributes().value(QString(), "src").toString());
+            }
+        } else if((reader.isEndElement()) && (reader.name()=="navPoint")) {
+            currentitem=currentitem->parent();
+        }
+    }
+    reader.clear();
+    mytoc.close();
     return 0;
 }
