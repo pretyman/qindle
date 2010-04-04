@@ -12,7 +12,7 @@
 This version doesn't need installation and won't affect the system. Just follow these steps:
 
  # Have usbNetwork installed.
- # Download qindle from http://qindle.googlecode.com/files/local.tar.bz2
+ # Download qindle package.
  # Extract into Kindle's flash drive. 
 
 That's all.
@@ -30,10 +30,10 @@ Some keys on Kindle have new functions.
 {{{
 Vol-    Tab
 Vol+   shift-Tab
-menu   pop-up menu(not used)
+menu   pop-up menu
 back     Esc
 Aa         Ctrl
-SYM      windows key(not used)
+SYM      windows key
 }}}
 
 
