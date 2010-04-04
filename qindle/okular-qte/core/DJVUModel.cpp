@@ -1,4 +1,25 @@
+/*
+ * Copyright (C) 2010 Li Miao <lm3783@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+
 #include "DJVUModel.h"
+#include <QDomDocument>
+#include <QDomElement>
+#include <QDomNodeList>
 
 using namespace okular;
 
@@ -49,7 +70,7 @@ QImage DJVUModel::getCurrentImage(Qt::AspectRatioMode mode)
     QSize actsize=this->DocumentSize;
     actsize.scale(this->ViewSize,mode);
 
-    return m_djvu->image(this->currentPage,actsize.width(),actsize.height(),this->pageRotate);
+    return m_djvu->image(this->currentPage,actsize.width(),actsize.height(),0);
 }
 
 int DJVUModel::getCurrentPageNo()
@@ -72,4 +93,41 @@ void DJVUModel::setPageByName(QString name)
 int DJVUModel::getTotalPage()
 {
    return totalPage;
+}
+
+int DJVUModel::getTOC()
+{
+    AbstractModel::initTOC();
+    //the root item
+    QStandardItem* currentitem=new QStandardItem(QObject::tr("Index"));
+    m_TOCModel.appendRow(currentitem);
+    QDomElement item=this->m_djvu->documentBookmarks()->documentElement();
+
+    recurseTOC(item, currentitem);
+    return 0;
+}
+
+void DJVUModel::recurseTOC(QDomElement currentelement, QStandardItem *currentitem)
+{
+    QStandardItem *nameitem, *pageitem, *urlitem;
+    QDomNodeList childlist;
+    QDomNode child;
+    int j;
+    if(currentelement.hasAttribute("title")) {
+        nameitem=new QStandardItem(currentelement.attribute("title"));
+        urlitem=new QStandardItem(currentelement.attribute("PageName",""));
+        pageitem=new QStandardItem(currentelement.attribute("PageNumber",""));
+        j=currentitem->rowCount();
+        currentitem->setChild(j,0,nameitem);
+        currentitem->setChild(j,1,urlitem);
+        currentitem->setChild(j,2,pageitem);
+    }
+    if(currentelement.hasChildNodes()) {
+        childlist=currentelement.childNodes();
+        for(j=0;j<childlist.count();j++) {
+            child=childlist.at(j);
+            recurseTOC(child.toElement(), nameitem);
+        };
+    }
+    return;
 }

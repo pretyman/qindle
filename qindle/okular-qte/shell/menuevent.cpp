@@ -1,4 +1,4 @@
-/* 功能：将EPUB中的内容转换成webkit需要的回应。
+/*
  * Copyright (C) 2010 Li Miao <lm3783@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -16,27 +16,25 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include "menuevent.h"
+#include <QKeyEvent>
+#include <QtGui/QApplication>
+#include <QContextMenuEvent>
+#include <QPoint>
 
-#ifndef EPUBREPLY_H
-#define EPUBREPLY_H
-
-#include <QNetworkReply>
-#include "quazip.h"
-#include "quazipfile.h"
-
-class EPUBReply : public QNetworkReply
+bool menuevent::eventFilter(QObject *obj, QEvent *event)
 {
-    Q_OBJECT
-public:
-    EPUBReply(QObject *parent, const QNetworkRequest &req, const QNetworkAccessManager::Operation op, QuaZip* zipfile, QString rootpath);
-    ~EPUBReply();
+    if (event->type() == QEvent::KeyPress) {
+        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+        //qDebug("Ate key press %d", keyEvent->key());
+        if(keyEvent->key()==Qt::Key_Menu) {
+            QContextMenuEvent menuevent(QContextMenuEvent::Keyboard, QPoint());
+            QCoreApplication::sendEvent(obj,&menuevent);
+            //qDebug("Ate key press");
+            return true;
+        }
+    }
+    // standard event processing
+    return QObject::eventFilter(obj, event);
 
-    virtual void abort();
-    virtual qint64 readData(char *data, qint64 maxlen);
-    virtual qint64 bytesAvailable () const;
-private:
-    QuaZipFile* m_file;
-    qint64 bytesavail;
-};
-
-#endif // EPUBREPLY_H
+}

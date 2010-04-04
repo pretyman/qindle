@@ -22,6 +22,7 @@
 #include "hwinfo.h"
 #include <QMessageBox>
 #include <QDBusConnection>
+#include <QWSServer>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -71,9 +72,10 @@ void MainWindow::on_treeView_activated(QModelIndex index)
             QMessageBox::critical(0,tr("System Error"),tr("Cannot find program being able to open this file!"),QMessageBox::Ok);
             return;
         };
-        QMessageBox::information(0,tr("Debug"),program,QMessageBox::Ok);
+//        QMessageBox::information(0,tr("Debug"),program,QMessageBox::Ok);
+//
+//        QMessageBox::information(0,tr("Debug"),model.filePath(index),QMessageBox::Ok);
         fileutil.Filename=model.filePath(index);
-        QMessageBox::information(0,tr("Debug"),model.filePath(index),QMessageBox::Ok);
         QStringList list;
         list.clear();
         fileutil.FileOpen(program,list);
@@ -136,7 +138,7 @@ void MainWindow::on_tableView_activated(QModelIndex index)
 {
     int row=index.row();
     QString filepath=progdb.ProgramModel.record(row).value(2).toString();
-    QMessageBox::information(0,tr("Debug"),filepath,QMessageBox::Ok);
+//    QMessageBox::information(0,tr("Debug"),filepath,QMessageBox::Ok);
 
     fileutil.Filename.clear();
     QStringList list;
@@ -210,5 +212,5 @@ void MainWindow::screensaver()
 
 void MainWindow::quitscreensaver()
 {
-    this->repaint();
+    QWSServer::instance()->refresh();
 }

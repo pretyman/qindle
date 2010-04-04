@@ -10,7 +10,8 @@ INCLUDEPATH += .
 TEMPLATE = lib
 CONFIG += staticlib
 INCLUDEPATH += ../include
-INCLUDEPATH += /home/nemo/temp/gplrelease/quazip-0.2.3/quazip
+INCLUDEPATH += ../include/quazip
+
 include(../3rdparty/3rdparty.pri)
 
 # Input
@@ -24,7 +25,6 @@ HEADERS += AbstractModel.h \
     PDFModel.h \
     TextBasedModel.h \
     TextBasedView.h \
-    TOCModel.h \
     controller.h \
     chmreply.h \
     epubreply.h
@@ -33,9 +33,9 @@ SOURCES += CHMModel.cpp \
     EPUBModel.cpp \
     Metadata.cpp \
     PDFModel.cpp \
-    TOCModel.cpp \
     controller.cpp \
     ImageBasedView.cpp \
     TextBasedView.cpp \
     chmreply.cpp \
-    epubreply.cpp
+    epubreply.cpp \
+    AbstractModel.cpp
