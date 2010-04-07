@@ -28,7 +28,7 @@ namespace okular {
         Q_OBJECT
     public:
         TextBasedView(QWidget *p);
-
+        void setEncoding(QString encoding);
         int loadFile(QString filename);
         void setManager(QNetworkAccessManager* manager);
     protected:

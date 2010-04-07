@@ -227,5 +227,12 @@ void MainWindow::on_action_Add_Bookmark_triggered()
 
         if(name.isEmpty())
             name=QString::number(controller->getCurrentPageNo());
-        controller->addBookmark(name);
+        bool ret=controller->addBookmark(name);
+        if(!ret)
+            QMessageBox::warning(this, tr("Database Error"), tr("Cannot add bookmark."));
+}
+
+void MainWindow::on_actionGB18030_triggered()
+{
+    controller->setGBKencoding();
 }

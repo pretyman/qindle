@@ -79,7 +79,7 @@
     <value type="QString">CONFIG_PROTECT=/usr/share/X11/xkb</value>
     <value type="QString">CONFIG_PROTECT_MASK=/etc/sandbox.d /etc/env.d/java/ /etc/fonts/fonts.conf /etc/gconf /etc/terminfo /etc/ca-certificates.conf /etc/revdep-rebuild</value>
     <value type="QString">CVS_RSH=ssh</value>
-    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-FOJ1okdfMk,guid=bb94b49eb1c7ba33a5b90d474bb7fa20</value>
+    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-fXILFNh9ry,guid=fb39e27958ca17d329b2fd1f4bb9467d</value>
     <value type="QString">DISPLAY=:0.0</value>
     <value type="QString">EDITOR=/bin/nano</value>
     <value type="QString">EMBOSS_ACDROOT=/usr/share/EMBOSS/acd</value>
@@ -111,11 +111,11 @@
     <value type="QString">PWD=/home/nemo</value>
     <value type="QString">QTDIR=/usr/share/qt4</value>
     <value type="QString">QT_IM_MODULE=xim</value>
-    <value type="QString">SESSION_MANAGER=local/Nautilus:@/tmp/.ICE-unix/7003,unix/Nautilus:/tmp/.ICE-unix/7003</value>
+    <value type="QString">SESSION_MANAGER=local/Nautilus:@/tmp/.ICE-unix/4886,unix/Nautilus:/tmp/.ICE-unix/4886</value>
     <value type="QString">SHELL=/bin/bash</value>
     <value type="QString">SHLVL=4</value>
-    <value type="QString">SSH_AGENT_PID=6993</value>
-    <value type="QString">SSH_AUTH_SOCK=/tmp/ssh-NhYDFb6989/agent.6989</value>
+    <value type="QString">SSH_AGENT_PID=4873</value>
+    <value type="QString">SSH_AUTH_SOCK=/tmp/ssh-MtlinC4866/agent.4866</value>
     <value type="QString">TERM=linux</value>
     <value type="QString">USER=nemo</value>
     <value type="QString">VBOX_APP_HOME=/opt/VirtualBox</value>
@@ -146,7 +146,7 @@
     <value type="QString">CONFIG_PROTECT=/usr/share/X11/xkb</value>
     <value type="QString">CONFIG_PROTECT_MASK=/etc/sandbox.d /etc/env.d/java/ /etc/fonts/fonts.conf /etc/gconf /etc/terminfo /etc/ca-certificates.conf /etc/revdep-rebuild</value>
     <value type="QString">CVS_RSH=ssh</value>
-    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-FOJ1okdfMk,guid=bb94b49eb1c7ba33a5b90d474bb7fa20</value>
+    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-fXILFNh9ry,guid=fb39e27958ca17d329b2fd1f4bb9467d</value>
     <value type="QString">DISPLAY=:0.0</value>
     <value type="QString">EDITOR=/bin/nano</value>
     <value type="QString">EMBOSS_ACDROOT=/usr/share/EMBOSS/acd</value>
@@ -178,11 +178,11 @@
     <value type="QString">PWD=/home/nemo</value>
     <value type="QString">QTDIR=/usr/share/qt4</value>
     <value type="QString">QT_IM_MODULE=xim</value>
-    <value type="QString">SESSION_MANAGER=local/Nautilus:@/tmp/.ICE-unix/7003,unix/Nautilus:/tmp/.ICE-unix/7003</value>
+    <value type="QString">SESSION_MANAGER=local/Nautilus:@/tmp/.ICE-unix/4886,unix/Nautilus:/tmp/.ICE-unix/4886</value>
     <value type="QString">SHELL=/bin/bash</value>
     <value type="QString">SHLVL=4</value>
-    <value type="QString">SSH_AGENT_PID=6993</value>
-    <value type="QString">SSH_AUTH_SOCK=/tmp/ssh-NhYDFb6989/agent.6989</value>
+    <value type="QString">SSH_AGENT_PID=4873</value>
+    <value type="QString">SSH_AUTH_SOCK=/tmp/ssh-MtlinC4866/agent.4866</value>
     <value type="QString">TERM=linux</value>
     <value type="QString">USER=nemo</value>
     <value type="QString">VBOX_APP_HOME=/opt/VirtualBox</value>
@@ -210,7 +210,7 @@
     <value type="QString">CONFIG_PROTECT=/usr/share/X11/xkb</value>
     <value type="QString">CONFIG_PROTECT_MASK=/etc/sandbox.d /etc/env.d/java/ /etc/fonts/fonts.conf /etc/gconf /etc/terminfo /etc/ca-certificates.conf /etc/revdep-rebuild</value>
     <value type="QString">CVS_RSH=ssh</value>
-    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-FOJ1okdfMk,guid=bb94b49eb1c7ba33a5b90d474bb7fa20</value>
+    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-fXILFNh9ry,guid=fb39e27958ca17d329b2fd1f4bb9467d</value>
     <value type="QString">DISPLAY=:0.0</value>
     <value type="QString">EDITOR=/bin/nano</value>
     <value type="QString">EMBOSS_ACDROOT=/usr/share/EMBOSS/acd</value>
@@ -242,11 +242,11 @@
     <value type="QString">PWD=/home/nemo</value>
     <value type="QString">QTDIR=/usr/share/qt4</value>
     <value type="QString">QT_IM_MODULE=xim</value>
-    <value type="QString">SESSION_MANAGER=local/Nautilus:@/tmp/.ICE-unix/7003,unix/Nautilus:/tmp/.ICE-unix/7003</value>
+    <value type="QString">SESSION_MANAGER=local/Nautilus:@/tmp/.ICE-unix/4886,unix/Nautilus:/tmp/.ICE-unix/4886</value>
     <value type="QString">SHELL=/bin/bash</value>
     <value type="QString">SHLVL=4</value>
-    <value type="QString">SSH_AGENT_PID=6993</value>
-    <value type="QString">SSH_AUTH_SOCK=/tmp/ssh-NhYDFb6989/agent.6989</value>
+    <value type="QString">SSH_AGENT_PID=4873</value>
+    <value type="QString">SSH_AUTH_SOCK=/tmp/ssh-MtlinC4866/agent.4866</value>
     <value type="QString">TERM=linux</value>
     <value type="QString">USER=nemo</value>
     <value type="QString">VBOX_APP_HOME=/opt/VirtualBox</value>

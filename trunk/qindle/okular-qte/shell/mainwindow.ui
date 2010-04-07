@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>480</width>
     <height>640</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Okular Embedded</string>
   </property>
   <property name="documentMode">
    <bool>false</bool>
@@ -34,7 +34,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>400</width>
+     <width>480</width>
      <height>30</height>
     </rect>
    </property>
@@ -123,6 +123,7 @@
     <property name="title">
      <string>&amp;Backend</string>
     </property>
+    <addaction name="actionGB18030"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Goto"/>
@@ -311,6 +312,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+B</string>
+   </property>
+  </action>
+  <action name="actionGB18030">
+   <property name="text">
+    <string>GBK Hack</string>
    </property>
   </action>
  </widget>

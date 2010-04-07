@@ -161,10 +161,14 @@ int EPUBModel::getTOC()
     QStandardItem* newitem;
     QStandardItem* tempitem;
     int i=0;
+    bool inNav=false;
     m_TOCModel.appendRow(currentitem);
     QXmlStreamReader reader(&mytoc);
     for(;!(reader.atEnd());reader.readNextStartElement()){
-        if(reader.isStartElement()) {
+        //some document have more things than navmap.
+        if(reader.isStartElement() && reader.name()=="navMap")
+            inNav=true;
+        if(reader.isStartElement() && inNav) {
             if(reader.name()=="navPoint") {
                 newitem=new QStandardItem();
                 tempitem=new QStandardItem();
@@ -179,7 +183,8 @@ int EPUBModel::getTOC()
             }
         } else if((reader.isEndElement()) && (reader.name()=="navPoint")) {
             currentitem=currentitem->parent();
-        }
+        } else if(reader.isEndElement() && reader.name()=="navMap")
+            inNav=false;
     }
     reader.clear();
     mytoc.close();

@@ -25,9 +25,7 @@ using namespace okular;
 
 ImageBasedView::ImageBasedView(QWidget *p) : QLabel(p)
 {
-    scalemode=Qt::KeepAspectRatioByExpanding;
-    m_machine.m_type=Fit;
-    m_machine.m_state=Begin;
+
 }
 
 int ImageBasedView::loadImage(QImage image)

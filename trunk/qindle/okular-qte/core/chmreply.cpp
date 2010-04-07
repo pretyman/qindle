@@ -30,7 +30,7 @@ CHMReply::CHMReply(QObject *parent, const QNetworkRequest &req, const QNetworkAc
     m_file=file;
     QString filename=req.url().toString(QUrl::RemoveScheme | QUrl::RemoveFragment).mid(2); //remove first two slash
 
-    int i=chm_resolve_object(m_file,filename.toAscii().data(),&cui);
+    int i=chm_resolve_object(m_file,filename.toUtf8().data(),&cui);
     if (i==CHM_RESOLVE_SUCCESS) {
         bytesavail=cui.length;
         this->setHeader(QNetworkRequest::ContentLengthHeader, cui.length);

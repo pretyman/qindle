@@ -53,3 +53,8 @@ void TextBasedView::keyPressEvent(QKeyEvent *ev)
 
     //qWarning("%d,%d,%d", frame->scrollBarValue(Qt::Vertical), frame->scrollBarMaximum(Qt::Vertical), frame->scrollBarMinimum(Qt::Vertical));
 }
+
+void TextBasedView::setEncoding(QString encoding)
+{
+    this->settings()->setDefaultTextEncoding(encoding);
+}

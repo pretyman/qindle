@@ -60,8 +60,8 @@ int PDFModel::open(QString filename)
     /*
      * Open PDF and load xref table
      */
-
-    app->filename = filename.toLocal8Bit().data();
+    QByteArray file=filename.toLocal8Bit();
+    app->filename = file.data();
 
     app->xref = pdf_newxref();
     error = pdf_loadxref(app->xref, app->filename);
@@ -213,7 +213,21 @@ QImage PDFModel::getCurrentImage(Qt::AspectRatioMode mode)
     }
 
     this->pdf_showpage(0,1);
-    return QImage(app->image->samples+1, app->image->w, app->image->h, QImage::Format_ARGB32_Premultiplied).rgbSwapped();
+    //fitz returns a bgra image, while qimage needs argb.
+    int j;
+    fz_sample* i;
+    fz_sample tmp;
+    for(j=0;j<(app->image->h * app->image->w * app->image->n);j+=app->image->n) {
+        i=app->image->samples+j;
+        tmp=*i;
+        *i=*(i+3);
+        *(i+3)=tmp;
+
+        tmp=*(i+1);
+        *(i+1)=*(i+2);
+        *(i+2)=tmp;
+    }
+    return QImage(app->image->samples, app->image->w, app->image->h, QImage::Format_ARGB32_Premultiplied);
 }
 
 void PDFModel::pdf_showpage(int loadpage, int drawpage)
@@ -236,7 +250,7 @@ void PDFModel::pdf_showpage(int loadpage, int drawpage)
             error = pdf_loadpage(&app->page, app->xref, obj);
             if (error)
                     pdfapp_error(app, error);
-
+            //fz_dropobj(obj);
             //sprintf(buf, "%s - %d/%d", app->doctitle, app->pageno, app->pagecount);
     }
 
@@ -258,6 +272,8 @@ void PDFModel::pdf_showpage(int loadpage, int drawpage)
     }
 
     //pdfapp_panview(app, app->panx, app->pany);
+    //we have momory leak....
+
 
 }
 
@@ -277,8 +293,13 @@ int PDFModel::getTOC()
 
     do {
         nameitem=new QStandardItem(QString::fromUtf8(outline->title));
+        //Sometimes these is a title without link.
+        if (outline->link) {
         page=pdf_findpageobject(app->xref, outline->link->dest);
         pageitem=new QStandardItem(QString::number(page));
+    } else
+        pageitem=new QStandardItem();
+
         i=currentitem->rowCount();
         currentitem->setChild(i,0,nameitem);
         currentitem->setChild(i,2,pageitem);

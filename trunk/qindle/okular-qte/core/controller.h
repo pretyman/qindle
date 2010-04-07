@@ -48,7 +48,7 @@ public:
     void setZoomFactor(qreal factor);
     void setRotate(int degree);
     bool addBookmark(QString name);
-
+    void setGBKencoding();
 public slots:
     //For QFileDialog
     void openFile(QString filename);
