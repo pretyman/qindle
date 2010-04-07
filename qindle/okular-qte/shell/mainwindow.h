@@ -43,6 +43,7 @@ private:
     okular::Controller* controller;
 
 private slots:
+    void on_actionGB18030_triggered();
     void on_action_Add_Bookmark_triggered();
     void on_actionSplit_Half_Vertically_triggered();
     void on_actionSplit_One_Sixth_triggered();

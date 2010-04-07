@@ -58,7 +58,6 @@ Controller::~Controller()
         textmodel->close();
         delete textmodel;
     }
-
     db.close();
 }
 
@@ -122,11 +121,17 @@ void Controller::gotoPage(QString pagename)
 
 void Controller::gotoPage(bool gotoNextPage)
 {
-    int page=getCurrentPageNo();
-    if(page < getTotalPage() && gotoNextPage)
-        gotoPage(page+1);
-    else if(page >1 && !(gotoNextPage))
-        gotoPage(page-1);
+    //users may use hyperlink, which changes current page, but it depends...
+//    if(this->m_type==ImageBased) {
+        int page=getCurrentPageNo();
+        if(page < getTotalPage() && gotoNextPage)
+            gotoPage(page+1);
+        else if(page >1 && !(gotoNextPage))
+            gotoPage(page-1);
+//    } else {
+
+//    }
+
 }
 
 void Controller::refreshView()
@@ -163,12 +168,15 @@ QStandardItemModel* Controller::getTOCModel()
 
 void Controller::mainwindowfinished()
 {
+
     if(this->m_type==ImageBased) {
         imageview->updateSize();
         connect(this,SIGNAL(setDisplayType(int)), imageview, SLOT(setDisplayType(int)));
         connect(imageview, SIGNAL(refresh()), this, SLOT(refreshView()));
+        imageview->setDisplayType(1);
     }
     gotoPage(0);
+
 }
 
 void Controller::setZoomFactor(qreal factor)
@@ -190,9 +198,10 @@ void Controller::setRotate(int degree)
 
 QStandardItemModel* Controller::getBookmark()
 {
-    if(!db.isOpen())
+    if(!db.isOpen()) {
+        qWarning("%d", db.lastError().number());
         return &m_model->m_TOCModel;
-
+    }
     QSqlQuery query(db);
     query.prepare("SELECT name, pagenumber, pagename FROM bookmark WHERE hash = ?");
     query.addBindValue(QString::number(FileNameHash));
@@ -231,27 +240,58 @@ bool Controller::addBookmark(QString name)
     query.bindValue(":hash", FileNameHash);
     query.bindValue(":name", name);
     query.bindValue(":pagenumber", m_model->getCurrentPageNo());
-    query.bindValue(":pagename", m_model->getCurrentPageName());
-    return query.exec();
+
+    QString pagename;
+    if(this->m_type==ImageBased)
+        pagename=m_model->getCurrentPageName();
+    else
+        pagename=textview->url().toString(QUrl::RemoveScheme).mid(3);
+    qWarning("%s", pagename.toAscii().data());
+    query.bindValue(":pagename",pagename);
+    bool ret=query.exec();
+    if(!ret)
+        qWarning("%d, %s", query.lastError().number(), query.lastError().text().toAscii().data());
+    query.finish();
+
+    return ret;
 }
 
 void Controller::removeBookmark(QString name)
 {
     QSqlQuery query(db);
-    query.prepare("DELETE FROM bookmark WHERE hash = :hash AND name = :name");
+    query.prepare("DELETE FROM bookmark WHERE hash = :hash AND name LIKE :name");
     query.bindValue(":hash", FileNameHash);
     query.bindValue(":name", name);
-    query.exec();
+    bool ret=query.exec();
+    if(!ret)
+        qWarning("%d, %s", query.lastError().number(), query.lastError().text().toAscii().data());
+    query.finish();
+
     return;
 }
 
 void Controller::changeBookmarkName(QString oldname, QString newname)
 {
     QSqlQuery query(db);
-    query.prepare("UPDATE FROM bookmark SET name = :newname WHERE hash = :hash AND name = :name");
+    query.prepare("UPDATE bookmark SET name = :newname WHERE hash = :hash AND name LIKE :name");
     query.bindValue(":hash", FileNameHash);
     query.bindValue(":name", oldname);
     query.bindValue(":newname", newname);
-    query.exec();
+    bool ret=query.exec();
+    if(!ret)
+        qWarning("%d, %s", query.lastError().number(), query.lastError().text().toAscii().data());
+    query.finish();
+
     return;
+}
+
+void Controller::setGBKencoding()
+{
+    if(this->m_type==TextBased) {
+        textmodel->codecName="gb18030";
+        m_model->m_TOCModel.clear();
+        textmodel->getTOC();
+        textview->setEncoding("gb18030");
+        textview->reload();
+    }
 }

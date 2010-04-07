@@ -25,6 +25,7 @@
 #include <QXmlStreamReader>
 #include <QStandardItem>
 #include <QXmlStreamAttributes>
+#include <QTextCodec>
 
 #define DATA_SIZE 256
 #define DATA_CHUNK 256
@@ -32,10 +33,11 @@ using namespace okular;
 
 int CHMModel::open(QString filename)
 {
-    m_file=chm_open(filename.toAscii().data());
+    m_file=chm_open(filename.toLocal8Bit().data());
     if(m_file==NULL)
         return -1;
     TOCResolved=false;
+    codecName="utf8";
     return init();
 }
 
@@ -47,7 +49,7 @@ void CHMModel::close()
 QNetworkReply* CHMModel::createRequest ( Operation op, const QNetworkRequest & req, QIODevice * outgoingData)
 {
     QNetworkReply* ret;
-    //qWarning("%s", req.url().toString().toAscii().data());
+    //qWarning("%s", req.url().toString().toUtf8().data());
     if(req.url().scheme()=="file")
         ret=new CHMReply(this,req, op, m_file);
     else
@@ -59,6 +61,7 @@ int CHMModel::init()
 {
     chmUnitInfo cui;
     int i=chm_resolve_object(m_file, "/#SYSTEM",&cui);
+
     if(i==CHM_RESOLVE_FAILURE)
         return -1;
     char data[DATA_SIZE]="";
@@ -80,7 +83,9 @@ int CHMModel::init()
     TopicName=QString(filename);
     filename.clear();
 
+    //the following code doesn't work in all conditions.
     i=chm_resolve_object(m_file, "/#STRINGS",&cui);
+
     if(i==CHM_RESOLVE_FAILURE)
         return -1;
     chm_retrieve_object(m_file, &cui, (unsigned char *)data, 0, DATA_SIZE);
@@ -92,7 +97,17 @@ int CHMModel::init()
         i++;
     };
     filename.append(code+1,length-code);
-    TOCName="/"+QString(filename);
+    //workaround
+    if(filename.contains("hhc")) {
+        TOCName="/"+QString(filename);
+    } else {
+        i=chm_resolve_object(m_file, "/toc.hhc",&cui);
+        if(i==CHM_RESOLVE_SUCCESS)
+            TOCName="/toc.hhc";
+        else
+            TOCName="";
+    }
+
     return 0;
 }
 QString CHMModel::getCurrentPageName()
@@ -160,8 +175,8 @@ int CHMModel::getTOC()
      *  (from htmlhelp.chm)
     */
 
-
-    QString src=QString(qdata);
+    //some SOB use gbk encoding, while others don't like it....
+    QString src=QTextCodec::codecForName(codecName)->toUnicode(qdata);
 
     int pos = 0;
     bool in_object = false;

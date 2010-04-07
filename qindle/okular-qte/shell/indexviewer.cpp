@@ -70,18 +70,20 @@ void IndexViewer::on_treeView_expanded(QModelIndex index)
 
 void IndexViewer::on_treeView_activated(QModelIndex index)
 {
-
-    QAbstractItemModel* model=ui->treeView->model();
     int row=index.row();
-    QModelIndex pageindex=model->sibling(row,2,index);
+    qWarning("%d,%s",row, index.data().toByteArray().data());
+
+    QModelIndex pageindex=index.sibling(row,1);
     QString url=pageindex.data().toString();
+    qWarning("url %s", url.toAscii().data());
     if(!(url.isEmpty()))
-        emit(gotoPage(url.toInt()));
+        emit(gotoPage(url));
     else {
-        pageindex=model->sibling(row,-1,index);
+        pageindex=index.sibling(row,2);
         url=pageindex.data().toString();
+        qWarning("page %s", url.toAscii().data());
         if(!(url.isEmpty()))
-            emit(gotoPage(url));
+            emit(gotoPage(url.toInt()));
     }
     this->close();
 }

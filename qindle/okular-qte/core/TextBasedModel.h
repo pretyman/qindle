@@ -26,6 +26,7 @@
 namespace okular{
 class TextBasedModel : public QNetworkAccessManager, public AbstractModel {
 public:
+    QByteArray codecName;
     //Page 0 is the topic page.
 protected:
     virtual QNetworkReply *	createRequest ( Operation op, const QNetworkRequest & req, QIODevice * outgoingData = 0 )=0;
