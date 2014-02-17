@@ -1,13 +1,56 @@
-#summary One-sentence summary of this page.
+#summary 博阅e-ink阅读器技术资料
 
-= Introduction =
+（本文为备忘录性质，用于记录研究中发现的技术特性。下文均以G10二代阅读器为研究对象）
 
-Add your content here.
+= 基本参数 =
+== 硬件 ==
+ * RK2818 处理器，ARM926EJ-S核心
+ * 128M 内存
+ * EPSON S1D13521 e-ink驱动芯片（存疑）
+ * EINK V220 显示屏
+ * WM8904 音频芯片
+ * Marvell sd8686 无线网卡
 
+== 软件 ==
+ * Linux-2.6.25
+ * glibc-2.9
+ * Qt-4.7.4
 
-= Details =
+= 系统设计 =
+== 基本架构 ==
+应用程序均运行在Qt Framework下。底层是名为boeyeserver的程序，一方面作为qwsserver向应用程序提供输入法、状态栏等服务，一方面通过dbus传输和执行各类消息。此外还有名为netserver的底层程序，作用不明。
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+== 显示设备 ==
+屏幕以framebuffer的形式驱动，大小为824x1200，不支持旋转，不支持双缓冲。支持8bpp, 16bpp, 32bpp显示模式，默认运行在16bpp。
+
+注：8bit模式下line_length需除以2.
+
+== 屏幕刷新方式 ==
+总所周知，eink屏幕需要手动执行指令刷新屏幕。此系统似乎并未重写Qt的显示驱动，而是通过另外的库libboeye.so和libboeyewidget.so，以重写控件的形式插入刷新指令。
+
+底层的刷新操作是通过ioctl传递到内核。目前已知的指令包括
+{{{
+#define FBIO_UPD_DISPLAY_FULL   4621
+#define FBIO_UPD_DISPLAY_AREA  4622
+}}}
+
+以上名称仅作参考，具体作用和区别未知。
+
+结构体参数的格式如下：
+{{{
+    struct update_args_t {
+        unsigned int    mode;
+        unsigned int    x;
+        unsigned int    y;
+        unsigned int    w;
+        unsigned int    h;
+    }
+}}}
+其中mode的取值推测为
+{{{
+#define BS_UPD_MODE_MU          1       //  MU (monochrome update)
+#define BS_UPD_MODE_GU          2       //  GU (grayscale update)
+#define BS_UPD_MODE_GC          3       //  GC (grayscale clear)
+#define BS_UPD_MODE_PU          4       //  PU (pen update)
+}}}
+以上名称仅作参考，具体作用和区别未知。
