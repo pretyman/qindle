@@ -6,6 +6,7 @@
 #include <QtNetwork/QHostAddress>
 #include <QtDBus/QDBusInterface>
 #include "fbupdate.h"
+#include "webdialog.h"
 
 namespace Ui {
 class Dialog;
@@ -24,6 +25,9 @@ signals:
 
 protected:
     void paintEvent(QPaintEvent *);
+
+private slots:
+    void on_buttonBox_accepted();
 
 private:
     Ui::Dialog *ui;
