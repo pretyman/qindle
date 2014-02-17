@@ -40,3 +40,9 @@ void Dialog::paintEvent(QPaintEvent *)
     emit(this->UpdateWindow());
 
 }
+
+void Dialog::on_buttonBox_accepted()
+{
+    webDialog* download = new webDialog(this, this->update);
+    download->show();
+}

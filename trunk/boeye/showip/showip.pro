@@ -15,11 +15,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         dialog.cpp \
     fbupdate.cpp \
-    webdialog.cpp
+    webdialog.cpp \
+    resthandler.cpp
 
 HEADERS  += dialog.h \
     fbupdate.h \
-    webdialog.h
+    webdialog.h \
+    resthandler.h
 
 FORMS    += dialog.ui \
     webdialog.ui
