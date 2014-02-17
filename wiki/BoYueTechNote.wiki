@@ -18,7 +18,7 @@
 
 = 系统设计 =
 == 基本架构 ==
-应用程序均运行在Qt Framework下。底层是名为boeyeserver的程序，一方面作为qwsserver向应用程序提供输入法、状态栏等服务，一方面通过dbus传输和执行各类消息。此外还有名为netserver的底层程序，作用不明。
+应用程序均运行在Qt Framework下。底层是名为boeyeserver的程序，一方面作为qwsserver向应用程序提供输入法、状态栏等服务，一方面通过dbus传输和执行各类消息。此外还有名为netserver的底层程序， ~~作用不明~~ 实际上就是wpa_supplicant。
 
 == 显示设备 ==
 屏幕以framebuffer的形式驱动，大小为824x1200，不支持旋转，不支持双缓冲。支持8bpp, 16bpp, 32bpp显示模式，默认运行在16bpp。
