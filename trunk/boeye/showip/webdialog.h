@@ -2,7 +2,8 @@
 #define WEBDIALOG_H
 
 #include <QDialog>
-#include "fbupdate.h"
+#include <QPaintEvent>
+#include <QRect>
 
 namespace Ui {
 class webDialog;
@@ -13,18 +14,17 @@ class webDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit webDialog(QWidget *parent = 0, FBUpdate *update = 0);
+    explicit webDialog(QWidget *parent = 0);
     ~webDialog();
 
 signals:
-    void UpdateWindow();
+    void UpdateWindow(QRect region);
 
 protected:
-    void paintEvent(QPaintEvent *);
+    void paintEvent(QPaintEvent *event);
 
 private:
     Ui::webDialog *ui;
-    FBUpdate* update;
 
 };
 

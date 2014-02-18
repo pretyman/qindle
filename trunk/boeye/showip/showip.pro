@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network dbus
+QT       += core gui network dbus webkit
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 

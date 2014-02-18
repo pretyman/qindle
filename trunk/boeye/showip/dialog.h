@@ -2,9 +2,8 @@
 #define DIALOG_H
 
 #include <QDialog>
-#include <QtNetwork/QNetworkInterface>
-#include <QtNetwork/QHostAddress>
-#include <QtDBus/QDBusInterface>
+#include <QPaintEvent>
+#include <QRect>
 #include "fbupdate.h"
 #include "webdialog.h"
 
@@ -21,17 +20,17 @@ public:
     ~Dialog();
 
 signals:
-    void UpdateWindow();
+    void UpdateWindow(QRect region);
 
 protected:
-    void paintEvent(QPaintEvent *);
+    void paintEvent(QPaintEvent *event);
 
 private slots:
     void on_buttonBox_accepted();
 
 private:
     Ui::Dialog *ui;
-    FBUpdate* update;
+    FBUpdate *fbupdate;
 };
 
 #endif // DIALOG_H

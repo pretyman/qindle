@@ -10,48 +10,43 @@
 FBUpdate::FBUpdate(QObject *parent) :
     QObject(parent)
 {
-    this->timer = new QTimer();
+
 }
 
 FBUpdate::~FBUpdate()
 {
-    delete this->timer;
+
 }
 
 int FBUpdate::Init()
 {
-    connect(this->timer, SIGNAL(timeout()), this, SLOT(timeOut()));
-    this->timer->setInterval(FB_UPDATE_INTERVAL);
-    this->timer->setSingleShot(0);
+    connect(&(this->timer), SIGNAL(timeout()), this, SLOT(timeOut()));
+    this->timer.setInterval(FB_UPDATE_INTERVAL);
+    this->timer.setSingleShot(1);
     this->fbhandle = open("/dev/fb0", O_RDWR);
     if(this->fbhandle) {
         return 1;
     } else {
         return 0;
     }
-
 }
 
-void FBUpdate::Update(int mode)
-{
-    this->Update(mode, 0, 0, 0, 0);
-}
-
-void FBUpdate::Update(int mode, int x, int y, int w, int h)
+void FBUpdate::Update(int mode, QRect region)
 {
     if(this->needupdate == 2) {
         return;
     }
+    this->rect = this->rect.united(region);
     this->update_args.mode = mode;
-    this->update_args.x = x;
-    this->update_args.y = y;
-    this->update_args.w = w;
-    this->update_args.h = h;
-    if(this->timer->isActive()) {
+    this->update_args.x = this->rect.x();
+    this->update_args.y = this->rect.y();
+    this->update_args.w = this->rect.width();
+    this->update_args.h = this->rect.height();
+    if(this->timer.isActive()) {
         this->needupdate = 1;
     } else {
-        this->timer->singleShot(FB_UPDATE_INTERVAL, this, SLOT(timeOut()));
         this->doUpdate();
+        this->timer.start();
     }
 }
 
@@ -60,9 +55,9 @@ void FBUpdate::Close()
     close(this->fbhandle);
 }
 
-void FBUpdate::Update()
+void FBUpdate::Update(QRect region)
 {
-    this->Update(BS_UPD_MODE_GU, 0, 0, 0, 0);
+    this->Update(BS_UPD_MODE_GU, region);
 }
 
 void FBUpdate::StartAutoUpdate()
@@ -74,28 +69,27 @@ void FBUpdate::StartAutoUpdate()
     this->update_args.h = 0;
 
     this->needupdate = 2;
-    this->timer->start();
+    this->timer.start();
 }
 
 void FBUpdate::StopAutoUpdate()
 {
     this->needupdate = 0;
-    this->timer->stop();
+    this->timer.stop();
 }
 
 void FBUpdate::doUpdate()
 {
     int command = FBIO_UPD_DISPLAY_AREA;
     ioctl(this->fbhandle, command, &(this->update_args));
-    //qDebug("Updated");
+    this->rect = QRect();
+    qDebug("Updated %d,%d,%d,%d", this->update_args.x, this->update_args.y, this->update_args.w, this->update_args.h);
 }
 
 void FBUpdate::timeOut()
 {
     if(this->needupdate == 1) {
-        this->doUpdate();
         this->needupdate = 0;
-    } else if(this->needupdate == 2) {
         this->doUpdate();
     }
 }

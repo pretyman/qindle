@@ -1,14 +1,21 @@
 #include "webdialog.h"
 #include "ui_webdialog.h"
 
-webDialog::webDialog(QWidget *parent, FBUpdate* update) :
+#include <QtWebKit/QWebView>
+#include <QUrl>
+
+webDialog::webDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::webDialog)
 {
     ui->setupUi(this);
 
-    this->update = update;
-    connect(this, SIGNAL(UpdateWindow()), this->update,SLOT(Update()));
+    QWebView *view = new QWebView(parent);
+    view->load(QUrl("http://www.baidu.com"));
+
+    this->ui->stackedWidget->addWidget(view);
+    view->show();
+    view->setFocus();
 
 }
 
@@ -18,8 +25,9 @@ webDialog::~webDialog()
 
 }
 
-void webDialog::paintEvent(QPaintEvent *)
+void webDialog::paintEvent(QPaintEvent *event)
 {
-    emit(this->UpdateWindow());
+    QRect region = event->rect();
+    emit(this->UpdateWindow(region));
 
 }
