@@ -1,15 +1,20 @@
 #include "dialog.h"
 #include "ui_dialog.h"
 
+#include <QtNetwork/QNetworkInterface>
+#include <QtNetwork/QHostAddress>
+#include <QtDBus/QDBusInterface>
+
+
 Dialog::Dialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Dialog)
 {
     ui->setupUi(this);
 
-    this->update = new FBUpdate();
-    update->Init();
-    connect(this, SIGNAL(UpdateWindow()), this->update,SLOT(Update()));
+    this->fbupdate = new FBUpdate();
+    fbupdate->Init();
+    connect(this, SIGNAL(UpdateWindow(QRect)), this->fbupdate,SLOT(Update(QRect)));
 
     QDBusInterface splash( "com.sibrary.BoeyeServer", "/StartupSplash", "com.sibrary.Service.StartupSplash" );
     splash.call("closeSplash");
@@ -31,18 +36,25 @@ Dialog::~Dialog()
 {
     QDBusConnection::sessionBus().send(QDBusMessage::createSignal("/USB", "com.sibrary.Service.USB", "umsDisconnected"));
     delete ui;
-    this->update->Close();
-    delete update;
+    this->fbupdate->Close();
+    delete fbupdate;
 }
 
-void Dialog::paintEvent(QPaintEvent *)
+void Dialog::paintEvent(QPaintEvent *event)
 {
-    emit(this->UpdateWindow());
+    QRect region = event->rect();
+    emit(this->UpdateWindow(region));
 
 }
+
+//void Dialog::keyPressEvent(QKeyEvent * event)
+//{
+//    qDebug("keycode: %x\n", event->key());
+//}
 
 void Dialog::on_buttonBox_accepted()
 {
-    webDialog* download = new webDialog(this, this->update);
+    webDialog* download = new webDialog(this);
+    connect(download, SIGNAL(UpdateWindow(QRect)), fbupdate, SLOT(Update(QRect)));
     download->show();
 }

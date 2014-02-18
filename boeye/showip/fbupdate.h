@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QTimer>
+#include <QRect>
 
 #define BS_UPD_MODE_MU          1       //  MU (monochrome update)
 #define BS_UPD_MODE_GU          2       //  GU (grayscale update)
@@ -23,21 +24,21 @@ public:
     explicit FBUpdate(QObject *parent = 0);
     ~FBUpdate();
     int Init();
-    void Update(int mode);
-    void Update(int mode, int x, int y, int w, int h);
     void Close();
+    void Update(int mode, QRect region);
 
 signals:
 
 public slots:
-    void Update();
+    void Update(QRect region);
     void StartAutoUpdate();
     void StopAutoUpdate();
 
 private:
     int fbhandle;
     int needupdate;
-    QTimer* timer;
+    QTimer timer;
+    QRect rect;
     struct update_args_t {
         unsigned int    mode;
         unsigned int    x;
