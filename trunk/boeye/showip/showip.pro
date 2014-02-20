@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network dbus webkit
+QT       += core gui network dbus webkit script
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -21,7 +21,8 @@ SOURCES += main.cpp\
 HEADERS  += dialog.h \
     fbupdate.h \
     webdialog.h \
-    resthandler.h
+    resthandler.h \
+    appid.h
 
 FORMS    += dialog.ui \
     webdialog.ui
