@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QPaintEvent>
 #include <QRect>
+#include <QTreeWidget>
 #include "resthandler.h"
 
 namespace Ui {
@@ -20,10 +21,15 @@ public:
 
 signals:
     void UpdateWindow(QRect region);
+    void getFolderContent(QDir path);
 
 public slots:
     void LoginSuccess();
     void showWeb();
+    void setFolderContent(QList<QString> *list);
+    void itemExpanded(QTreeWidgetItem *item);
+    void itemClicked(QTreeWidgetItem * item, int);
+    void itemDownload(QTreeWidgetItem *item);
 
 protected:
     void paintEvent(QPaintEvent *event);
@@ -31,6 +37,7 @@ protected:
 private:
     Ui::webDialog *ui;
     resthandler *rhandler;
+    QTreeWidget *filelist;
 };
 
 #endif // WEBDIALOG_H

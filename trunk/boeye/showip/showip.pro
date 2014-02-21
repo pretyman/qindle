@@ -16,13 +16,15 @@ SOURCES += main.cpp\
         dialog.cpp \
     fbupdate.cpp \
     webdialog.cpp \
-    resthandler.cpp
+    resthandler.cpp \
+    webfilewidget.cpp
 
 HEADERS  += dialog.h \
     fbupdate.h \
     webdialog.h \
     resthandler.h \
-    appid.h
+    appid.h \
+    webfilewidget.h
 
 FORMS    += dialog.ui \
     webdialog.ui
