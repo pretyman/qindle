@@ -117,6 +117,7 @@ int resthandler::CreateFile(QDir path)
 
 void resthandler::getURL(QUrl url)
 {
+    QString test = url.path();
     if(url.path().contains("login_success")) {
         url.setEncodedQuery(url.encodedFragment());
         QString token = url.queryItemValue("access_token");
@@ -127,12 +128,10 @@ void resthandler::getURL(QUrl url)
 
 void resthandler::LoginReplyFinished(QNetworkReply *reply)
 {
-
     if(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) == 200) {
         QString jsonString = QString(reply->readAll());
         QScriptEngine engine;
         QScriptValue value = engine.evaluate("JSON.parse").call(QScriptValue(), QScriptValueList() << jsonString);
-        //
         QString str = value.property("client_id").toString();
         if(str == OAUTH_CLIENT_ID) {
             emit(LoginSuccess());
