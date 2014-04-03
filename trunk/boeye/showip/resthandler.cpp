@@ -95,6 +95,7 @@ void resthandler::FileFinished()
         delete downloadfile;
         downloadreply->close();
         downloadreply->deleteLater();
+        emit(ProcessComplete());
     }
 }
 
@@ -173,6 +174,6 @@ void resthandler::ListReplyFinished(QNetworkReply *reply)
     disconnect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(ListReplyFinished(QNetworkReply*)));
     reply->close();
     reply->deleteLater();
-
+    emit(ProcessComplete());
 }
 

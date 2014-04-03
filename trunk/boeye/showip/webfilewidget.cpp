@@ -1,4 +1,6 @@
 #include "webfilewidget.h"
+#include <QMenu>
+#include <QTreeWidgetItemIterator>
 
 WebFileWidget::WebFileWidget(QWidget *parent) :
     QTreeWidget(parent)
@@ -16,8 +18,10 @@ void WebFileWidget::connectHandler(resthandler *handler)
     this->rhandler = handler;
     connect(this, SIGNAL(getFolderContent(QDir)), rhandler, SLOT(getFileList(QDir)));
     connect(rhandler, SIGNAL(gotFileList(QList<QString>*)), this, SLOT(setFolderContent(QList<QString>*)));
-    connect(this, SIGNAL(itemExpanded(QTreeWidgetItem*)), SLOT(itemExpand(QTreeWidgetItem*)));
+    //connect(this, SIGNAL(itemExpanded(QTreeWidgetItem*)), SLOT(itemExpand(QTreeWidgetItem*)));
     connect(this, SIGNAL(itemActivated(QTreeWidgetItem*,int)), SLOT(itemClick(QTreeWidgetItem*,int)));
+    connect(this, SIGNAL(itemClicked(QTreeWidgetItem*,int)), SLOT(ShowMenu(QTreeWidgetItem*,int)));
+    connect(rhandler, SIGNAL(ProcessComplete()), this, SLOT(getChildItem()));
     emit(getFolderContent(QDir()));
 }
 
@@ -71,9 +75,6 @@ void WebFileWidget::itemExpand(QTreeWidgetItem *item)
 
 void WebFileWidget::itemClick(QTreeWidgetItem *item, int)
 {
-    if(item->childIndicatorPolicy() == QTreeWidgetItem::ShowIndicator) {
-        expandItem(item);
-    }
     if(item->checkState(3) == Qt::Unchecked) {
         this->itemCheckState(item, Qt::Checked);
     } else {
@@ -104,4 +105,27 @@ void WebFileWidget::itemCheckState(QTreeWidgetItem *item, Qt::CheckState state)
             this->itemCheckState(childitem, state);
         }
     }
+}
+
+void WebFileWidget::ShowMenu( QTreeWidgetItem*, int)
+{
+     QMenu menu(this);
+     menu.addAction("Download Selected", this, SLOT(itemDownload(QTreeWidgetItem*)));
+     menu.exec(this->mapToGlobal(QPoint(0,0)));
+}
+
+void WebFileWidget::getChildItem()
+{
+    QTreeWidgetItemIterator it(this);
+    while (*it) {
+        if((*it)->childCount() == 0 && (*it)->childIndicatorPolicy() == QTreeWidgetItem::ShowIndicator) {
+            this->setCurrentItem((*it));
+            this->itemExpand((*it));
+            return;
+        }
+        ++it;
+    }
+    this->collapseAll();
+    this->setCurrentItem(this->topLevelItem(0));
+    disconnect(rhandler, SIGNAL(ProcessComplete()), this, SLOT(getChildItem()));
 }
