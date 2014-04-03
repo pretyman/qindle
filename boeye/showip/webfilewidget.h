@@ -25,10 +25,12 @@ public slots:
     void itemExpand(QTreeWidgetItem *item);
     void itemClick(QTreeWidgetItem * item, int);
     void itemDownload(QTreeWidgetItem *item);
+    void ShowMenu(QTreeWidgetItem *, int);
+    void getChildItem();
+
 private:
     resthandler *rhandler;
     void itemCheckState(QTreeWidgetItem *item, Qt::CheckState state);
-
 };
 
 #endif // WEBFILEWIDGET_H

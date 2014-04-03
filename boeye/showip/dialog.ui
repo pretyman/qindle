@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;使用方法： &lt;/p&gt;&lt;p&gt;本地传输：在pc上使用FTP客户端（如FileZilla等）&lt;/p&gt;&lt;p&gt;连接以下地址传输文件。 &lt;/p&gt;&lt;p&gt;网盘传输：点击下方“打开”按钮连接百度网盘服务。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;使用方法： &lt;/p&gt;&lt;p&gt;本地传输：在pc上使用FTP客户端（如FileZilla等）&lt;/p&gt;&lt;p&gt;连接以下地址传输文件。 &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -54,6 +54,13 @@
       </size>
      </property>
     </spacer>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;网盘传输：点击下方“打开”按钮连接百度网盘服务。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">

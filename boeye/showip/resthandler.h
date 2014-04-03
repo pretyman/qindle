@@ -24,6 +24,7 @@ signals:
     void LoginSuccess();
     void LoginFailure();
     void gotFileList(QList<QString>*);
+    void ProcessComplete();
 
 public slots:
     void getURL(QUrl url);
