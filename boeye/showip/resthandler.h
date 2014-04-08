@@ -26,7 +26,6 @@ signals:
     void gotFileList(QStringList*);
     void FileNotFound();
     void ProcessComplete();
-    void bytesWritten (qint64 bytes);
 
 public slots:
     void getURL(QUrl url);

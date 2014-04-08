@@ -19,19 +19,19 @@ void WebFileWidget::connectHandler(resthandler *handler)
     this->rhandler = handler;
     connect(this, SIGNAL(getFolderContent(QDir)), rhandler, SLOT(getFileList(QDir)));
     connect(rhandler, SIGNAL(gotFileList(QStringList*)), this, SLOT(setFolderContent(QStringList*)));
-    //connect(this, SIGNAL(itemExpanded(QTreeWidgetItem*)), SLOT(itemExpand(QTreeWidgetItem*)));
-    connect(this, SIGNAL(itemActivated(QTreeWidgetItem*,int)), SLOT(itemClick(QTreeWidgetItem*,int)));
+    connect(this, SIGNAL(itemActivated(QTreeWidgetItem*,int)), SLOT(itemSelect(QTreeWidgetItem*,int)));
     connect(this, SIGNAL(itemClicked(QTreeWidgetItem*,int)), SLOT(ShowMenu(QTreeWidgetItem*,int)));
     connect(rhandler, SIGNAL(ProcessComplete()), this, SLOT(getChildItem()));
     emit(getFolderContent(QDir()));
 }
 
-//void WebFileWidget::paintEvent(QPaintEvent *event)
-//{
-//    QRect region = event->rect();
-//    emit(this->UpdateWindow(region));
+void WebFileWidget::paintEvent(QPaintEvent *event)
+{
+    QTreeWidget::paintEvent(event);
+    QRect region = event->rect();
+    emit(this->UpdateWindow(region));
 
-//}
+}
 
 void WebFileWidget::setFolderContent(QStringList *list)
 {
@@ -76,7 +76,7 @@ void WebFileWidget::itemExpand(QTreeWidgetItem *item)
     }
 }
 
-void WebFileWidget::itemClick(QTreeWidgetItem *item, int)
+void WebFileWidget::itemSelect(QTreeWidgetItem *item, int)
 {
     if(item->checkState(3) == Qt::Unchecked) {
         this->itemCheckState(item, Qt::Checked);
@@ -100,7 +100,6 @@ void WebFileWidget::itemDownload(QTreeWidgetItem *item)
             rhandler->ProcessFile(path, 2);
         } else {
             item->setText(2, "Downloading");
-            connect(rhandler, SIGNAL(bytesWritten(qint64)), this, SLOT(DownloadProgress(qint64)));
             rhandler->ProcessFile(path, 1);
         }
     } else if(item->text(2) == "Delete") {
@@ -134,14 +133,6 @@ void WebFileWidget::ShowMenu( QTreeWidgetItem* item, int)
      menu.addAction("Sync Selected", this, SLOT(ProcessSelected()));
      menu.addAction("Stop Download", this, SLOT(StopDownload()));
      menu.exec(this->mapToGlobal(point));
-}
-
-void WebFileWidget::DownloadProgress(qint64 bytes)
-{
-    int percentage = int((float(bytes) / this->DownloadingItem->text(1).toFloat()) * 100);
-    QString progress = "Downloading(" + QString().setNum(percentage) + "%)";
-    this->DownloadingItem->setText(2, progress);
-    this->resizeColumnToContents(0);
 }
 
 void WebFileWidget::SelectAll()
@@ -178,7 +169,6 @@ void WebFileWidget::getChildItem()
 void WebFileWidget::ProcessSelected()
 {
     if(this->DownloadingItem) {
-        disconnect(rhandler, SIGNAL(bytesWritten(qint64)), this, SLOT(DownloadProgress(qint64)));
         this->DownloadingItem->setText(2, "Finished");
 
     } else {
@@ -192,7 +182,7 @@ void WebFileWidget::ProcessSelected()
                 (*it)->setCheckState(3,Qt::Unchecked);
             } else {
                 this->DownloadingItem = (*it);
-                emit(itemDownload((*it)));
+                this->itemDownload((*it));
                 return;
             }
         }

@@ -57,12 +57,12 @@ void FBUpdate::Close()
 
 void FBUpdate::Update(QRect region)
 {
-    this->Update(BS_UPD_MODE_GU, region);
+    this->Update(BS_UPD_MODE_MU, region);
 }
 
 void FBUpdate::StartAutoUpdate()
 {
-    this->update_args.mode = BS_UPD_MODE_GU;
+    this->update_args.mode = BS_UPD_MODE_MU;
     this->update_args.x = 0;
     this->update_args.y = 0;
     this->update_args.w = 0;
