@@ -107,7 +107,6 @@ void resthandler::FileFinished()
         downloadreply->deleteLater();
         downloadreply = manager->get(QNetworkRequest(strUrl));
         connect(downloadreply, SIGNAL(readyRead()), this, SLOT(FileBytesAvailable()));
-        connect(downloadreply, SIGNAL(bytesWritten(qint64)), this, SIGNAL(bytesWritten(qint64)));
         connect(downloadreply, SIGNAL(finished()), this, SLOT(FileFinished()));
 
     } else {

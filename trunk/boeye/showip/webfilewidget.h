@@ -18,7 +18,7 @@ signals:
     void UpdateWindow(QRect region);
 
 protected:
-//    void paintEvent(QPaintEvent *event);
+    void paintEvent(QPaintEvent *event);
 
 public slots:
     void setFolderContent(QStringList *list);
@@ -27,11 +27,8 @@ public slots:
     void StopDownload();
 
 private slots:
-    void itemExpand(QTreeWidgetItem *item);
-    void itemClick(QTreeWidgetItem * item, int);
-    void itemDownload(QTreeWidgetItem *item);
+    void itemSelect(QTreeWidgetItem * item, int);
     void ShowMenu(QTreeWidgetItem *item, int);
-    void DownloadProgress(qint64 bytes);
     void SelectAll();
     void SelectNone();
 
@@ -39,6 +36,9 @@ private:
     resthandler *rhandler;
     QTreeWidgetItem *DownloadingItem;
     void itemCheckState(QTreeWidgetItem *item, Qt::CheckState state);
+    void itemExpand(QTreeWidgetItem *item);
+    void itemDownload(QTreeWidgetItem *item);
+
 };
 
 #endif // WEBFILEWIDGET_H
