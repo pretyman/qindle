@@ -7,7 +7,7 @@
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
 #include <QDir>
-#include <QList>
+#include <QStringList>
 #include <QFile>
 
 class resthandler : public QObject
@@ -18,13 +18,15 @@ public:
     ~resthandler();
     int getToken();
     QUrl LoginPage();
-    int DownloadFile(QDir path);
+    int ProcessFile(QString path, int mode);
 
 signals:
     void LoginSuccess();
     void LoginFailure();
-    void gotFileList(QList<QString>*);
+    void gotFileList(QStringList*);
+    void FileNotFound();
     void ProcessComplete();
+    void bytesWritten (qint64 bytes);
 
 public slots:
     void getURL(QUrl url);
@@ -40,6 +42,8 @@ private:
     QNetworkReply *downloadreply;
     QFile *downloadfile;
     int CreateFile(QDir path);
+    QString getSyncOperation(QString path, QString size);
+    void AppendLocalList(QString path, QStringList remotelist, QStringList* finallist);
 
 };
 
