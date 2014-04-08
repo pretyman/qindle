@@ -1,9 +1,9 @@
 #include "webdialog.h"
 #include "ui_webdialog.h"
 
-#include <QtWebKit/QWebView>
 #include <QUrl>
 #include <QTreeWidgetItem>
+#include <QLabel>
 
 webDialog::webDialog(QWidget *parent) :
     QDialog(parent),
@@ -13,13 +13,18 @@ webDialog::webDialog(QWidget *parent) :
     rhandler = new resthandler(this);
     connect(rhandler, SIGNAL(LoginSuccess()), this, SLOT(LoginSuccess()));
     connect(rhandler, SIGNAL(LoginFailure()), this, SLOT(showWeb()));
+    connect(rhandler, SIGNAL(FileNotFound()), this, SLOT(FileNotFound()));
     rhandler->getToken();
+    this->filelist = 0;
+    this->webview = 0;
 }
 
 webDialog::~webDialog()
 {
     delete ui;
     delete rhandler;
+    delete filelist;
+    delete webview;
 }
 
 void webDialog::LoginSuccess()
@@ -40,12 +45,26 @@ void webDialog::paintEvent(QPaintEvent *event)
 
 void webDialog::showWeb()
 {
-    QWebView *view = new QWebView(this);
-    view->load(this->rhandler->LoginPage());
+    if(this->filelist) {
+        this->ui->stackedWidget->removeWidget(this->filelist);
+        filelist->close();
+        delete filelist;
+        filelist = 0;
+    }
+    if(!this->webview) {
+        webview = new QWebView(this);
+        webview->load(this->rhandler->LoginPage());
+        this->ui->stackedWidget->addWidget(webview);
+        connect(webview, SIGNAL(urlChanged(QUrl)), rhandler, SLOT(getURL(QUrl)));
+    }
+    webview->setFocus();
 
-    this->ui->stackedWidget->addWidget(view);
-    view->show();
-    view->setFocus();
-    connect(view, SIGNAL(urlChanged(QUrl)), rhandler, SLOT(getURL(QUrl)));
+}
+
+void webDialog::FileNotFound()
+{
+    QLabel *label = new QLabel(this);
+    label->setText("Please go to My App Data->booksync folder and add your books.\n If the folders do not exist, you may need to create them.");
+    this->ui->stackedWidget->setCurrentIndex(this->ui->stackedWidget->addWidget(label));
 }
 

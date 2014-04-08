@@ -6,6 +6,7 @@
 #include <QNetworkRequest>
 #include <QScriptValueIterator>
 #include <QFileInfo>
+#include <QFileInfoList>
 
 resthandler::resthandler(QObject *parent) :
     QObject(parent)
@@ -32,6 +33,8 @@ int resthandler::getToken()
     } else {
         emit(LoginFailure());
     }
+    QDir qdir;
+    qdir.mkpath(DISK_ROOT_PATH);
     return 0;
 }
 
@@ -46,21 +49,37 @@ QUrl resthandler::LoginPage()
     return url;
 }
 
-int resthandler::DownloadFile(QDir path)
+int resthandler::ProcessFile(QString path, int mode)
 {
-    QDir abspath(APP_ROOT_PATH);
-    QUrl url("https://d.pcs.baidu.com/rest/2.0/pcs/file");
-    url.addQueryItem("method", "download");
-    url.addQueryItem("access_token", settings->value("access_token").toString());
-    url.addQueryItem("path", abspath.absoluteFilePath(path.path()));
-    QString str = url.toString();
-    if(this->CreateFile(path)) {
-        downloadreply = manager->get(QNetworkRequest(url));
-        connect(downloadreply, SIGNAL(finished()), this, SLOT(FileFinished()));
-        return 1;
+    if(mode == 1) {
+        QDir abspath(APP_ROOT_PATH);
+        QUrl url("https://d.pcs.baidu.com/rest/2.0/pcs/file");
+        url.addQueryItem("method", "download");
+        url.addQueryItem("access_token", settings->value("access_token").toString());
+        url.addQueryItem("path", abspath.absoluteFilePath(path));
+        QString str = url.toString();
+        if(this->CreateFile(path)) {
+            downloadreply = manager->get(QNetworkRequest(url));
+            connect(downloadreply, SIGNAL(finished()), this, SLOT(FileFinished()));
+            return 1;
+        } else {
+            return 0;
+        }
     } else {
-        return 0;
+        if(mode == 2) {
+            QDir root(DISK_ROOT_PATH);
+            root.mkpath(path);
+        } else if(mode == 3) {
+            QDir root(DISK_ROOT_PATH);
+            root.remove(path);
+        } else if(mode == 4) {
+            QDir root(DISK_ROOT_PATH);
+            root.rmpath(path);
+
+        }
+        emit(ProcessComplete());
     }
+    return 1;
 }
 
 void resthandler::getFileList(QDir path)
@@ -88,6 +107,7 @@ void resthandler::FileFinished()
         downloadreply->deleteLater();
         downloadreply = manager->get(QNetworkRequest(strUrl));
         connect(downloadreply, SIGNAL(readyRead()), this, SLOT(FileBytesAvailable()));
+        connect(downloadreply, SIGNAL(bytesWritten(qint64)), this, SIGNAL(bytesWritten(qint64)));
         connect(downloadreply, SIGNAL(finished()), this, SLOT(FileFinished()));
 
     } else {
@@ -113,6 +133,51 @@ int resthandler::CreateFile(QDir path)
         }
     } else{
         return 0;
+    }
+}
+
+QString resthandler::getSyncOperation(QString path, QString size)
+{
+    QString ret;
+    QDir rootpath(APP_ROOT_PATH);
+    QString relpath = rootpath.relativeFilePath(path);
+    QDir diskpath(DISK_ROOT_PATH);
+    QFileInfo fileinfo = diskpath.absoluteFilePath(relpath);
+    if(fileinfo.exists()) {
+        if(fileinfo.isDir()) {
+            ret = "Finished";
+        } else {
+            if(fileinfo.size() == size.toInt()) {
+                ret = "Finished";
+            } else {
+                ret = "Download";
+            }
+        }
+    } else {
+        ret = "Download";
+    }
+    return ret;
+}
+
+void resthandler::AppendLocalList(QString path, QStringList remotelist, QStringList *finallist)
+{
+    QDir rootpath(APP_ROOT_PATH);
+    QString relpath = rootpath.relativeFilePath(path);
+    QDir diskpath(DISK_ROOT_PATH);
+    QDir currentpath = QFileInfo(diskpath.absoluteFilePath(relpath)).path();
+    if(!currentpath.exists()) {
+        return;
+    }
+    QFileInfoList filelist = currentpath.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
+    while(!filelist.isEmpty()) {
+        QFileInfo file = filelist.takeFirst();
+        if(!remotelist.contains(file.fileName())){
+            finallist->append(file.fileName());
+            finallist->append(QString().setNum(file.size()));
+            finallist->append("Delete");
+            finallist->append(QString().setNum(file.isDir()));
+        }
+
     }
 }
 
@@ -154,22 +219,31 @@ void resthandler::ListReplyFinished(QNetworkReply *reply)
         QScriptEngine engine;
         QScriptValue value = engine.evaluate("JSON.parse").call(QScriptValue(), QScriptValueList() << jsonString);
         QScriptValueIterator iterator(value.property("list"));
-        QList<QString> *filelist = new QList<QString>();
+        QStringList *filelist = new QStringList();
+        QStringList remotelist;
+        QString path;
+        QString size;
         QString str;
         while(iterator.hasNext()) {
             iterator.next();
             if(iterator.name() != "length") {
-                str = iterator.value().property("path").toString().section("/", -1);
-                filelist->append(str);
-                str = iterator.value().property("size").toString();
+                path = iterator.value().property("path").toString();
+                filelist->append(path.section("/", -1));
+                remotelist.append(path.section("/", -1));
+                size = iterator.value().property("size").toString();
+                filelist->append(size);
+                str = this->getSyncOperation(path, size);
                 filelist->append(str);
                 str = iterator.value().property("isdir").toString();
                 filelist->append(str);
             }
         }
+        if(!filelist->isEmpty()) {
+            this->AppendLocalList(path, remotelist, filelist);
+        }
         emit(gotFileList(filelist));
     } else {
-        emit(LoginFailure());
+        emit(FileNotFound());
     }
     disconnect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(ListReplyFinished(QNetworkReply*)));
     reply->close();

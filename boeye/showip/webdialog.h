@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QPaintEvent>
 #include <QRect>
+#include <QtWebKit/QWebView>
 #include "webfilewidget.h"
 #include "resthandler.h"
 
@@ -25,6 +26,7 @@ signals:
 public slots:
     void LoginSuccess();
     void showWeb();
+    void FileNotFound();
 
 protected:
     void paintEvent(QPaintEvent *event);
@@ -33,6 +35,7 @@ private:
     Ui::webDialog *ui;
     resthandler *rhandler;
     WebFileWidget *filelist;
+    QWebView *webview;
 };
 
 #endif // WEBDIALOG_H
