@@ -25,10 +25,11 @@ public slots:
     void getChildItem();
     void ProcessSelected();
     void StopDownload();
+    void UpdateMenu(QAction *action);
 
 private slots:
     void itemSelect(QTreeWidgetItem * item, int);
-    void ShowMenu(QTreeWidgetItem *item, int);
+    void ShowMenu();
     void SelectAll();
     void SelectNone();
 

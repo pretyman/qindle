@@ -1,6 +1,7 @@
 #include "webfilewidget.h"
 #include <QMenu>
 #include <QTreeWidgetItemIterator>
+#include <QShortcut>
 
 WebFileWidget::WebFileWidget(QWidget *parent) :
     QTreeWidget(parent)
@@ -20,8 +21,11 @@ void WebFileWidget::connectHandler(resthandler *handler)
     connect(this, SIGNAL(getFolderContent(QDir)), rhandler, SLOT(getFileList(QDir)));
     connect(rhandler, SIGNAL(gotFileList(QStringList*)), this, SLOT(setFolderContent(QStringList*)));
     connect(this, SIGNAL(itemActivated(QTreeWidgetItem*,int)), SLOT(itemSelect(QTreeWidgetItem*,int)));
-    connect(this, SIGNAL(itemClicked(QTreeWidgetItem*,int)), SLOT(ShowMenu(QTreeWidgetItem*,int)));
     connect(rhandler, SIGNAL(ProcessComplete()), this, SLOT(getChildItem()));
+
+    QShortcut *shortcut = new QShortcut(QKeySequence("F6"), this);
+    connect(shortcut, SIGNAL(activated()), this, SLOT(ShowMenu()));
+
     emit(getFolderContent(QDir()));
 }
 
@@ -57,7 +61,11 @@ void WebFileWidget::setFolderContent(QStringList *list)
         str = list->takeFirst();
         if(str == "1") {
             item->setText(1,"");
-            item->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
+            if(item->text(2) == "Delete") {
+                item->setChildIndicatorPolicy(QTreeWidgetItem::DontShowIndicator);
+            } else {
+                item->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
+            }
         }
     }
     this->resizeColumnToContents(0);
@@ -124,10 +132,12 @@ void WebFileWidget::itemCheckState(QTreeWidgetItem *item, Qt::CheckState state)
     }
 }
 
-void WebFileWidget::ShowMenu( QTreeWidgetItem* item, int)
+void WebFileWidget::ShowMenu()
 {
      QMenu menu(this);
+     QTreeWidgetItem *item = this->currentItem();
      QPoint point = this->visualItemRect(item).bottomLeft();
+     connect(&menu, SIGNAL(hovered(QAction*)), this, SLOT(UpdateMenu(QAction*)));
      menu.addAction("Select All", this, SLOT(SelectAll()));
      menu.addAction("Select None", this, SLOT(SelectNone()));
      menu.addAction("Sync Selected", this, SLOT(ProcessSelected()));
@@ -195,4 +205,10 @@ void WebFileWidget::ProcessSelected()
 void WebFileWidget::StopDownload()
 {
     disconnect(rhandler, SIGNAL(ProcessComplete()), this, SLOT(ProcessSelected()));
+}
+
+void WebFileWidget::UpdateMenu(QAction *action)
+{
+    QRect region = action->parentWidget()->rect();
+    emit(this->UpdateWindow(region));
 }
