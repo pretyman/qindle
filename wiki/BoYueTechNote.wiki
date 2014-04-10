@@ -24,14 +24,14 @@
 输入设备包括键盘和5向摇杆。5向摇杆的方向映射为方向键，确认映射为Enter键（与键盘上的Enter键完全相同）
 
 Qt中特殊按键的映射如下：
- * SYM  F6
- * Scroll  F7
- * Refresh  F10
- * HOME  F8
- * PrevPage  PageUp
- * NextPage  PageDown
- * MENU  F9
- * BACK  Esc
+|| SYM || F6 ||
+|| Scroll || F7 ||
+|| Refresh || F10 ||
+|| HOME || F8 ||
+|| PrevPage || PageUp ||
+|| NextPage || PageDown ||
+|| MENU || F9 ||
+|| BACK || Esc ||
 
 
 == 显示设备 ==
