@@ -25,7 +25,7 @@ signals:
 
 protected:
     void paintEvent(QPaintEvent *event);
-    void keyPressEvent(QKeyEvent *event);
+//    void keyPressEvent(QKeyEvent *event);
 
 private slots:
     void on_buttonBox_accepted();

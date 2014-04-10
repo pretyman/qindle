@@ -45,7 +45,6 @@ void FBUpdate::Update(int mode, QRect region)
     if(this->timer.isActive()) {
         this->needupdate = 1;
     } else {
-        this->doUpdate();
         this->timer.start();
     }
 }
@@ -80,7 +79,7 @@ void FBUpdate::StopAutoUpdate()
 
 void FBUpdate::doUpdate()
 {
-    int command = FBIO_UPD_DISPLAY_AREA;
+    int command = FBIO_UPD_DISPLAY_FULL;
     ioctl(this->fbhandle, command, &(this->update_args));
     this->rect = QRect();
     qDebug("Updated %d,%d,%d,%d", this->update_args.x, this->update_args.y, this->update_args.w, this->update_args.h);
@@ -88,8 +87,9 @@ void FBUpdate::doUpdate()
 
 void FBUpdate::timeOut()
 {
+    this->doUpdate();
     if(this->needupdate == 1) {
         this->needupdate = 0;
-        this->doUpdate();
+        this->timer.start();
     }
 }
