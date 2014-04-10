@@ -56,7 +56,7 @@ void webDialog::showWeb()
     }
     if(!this->webview) {
         webview = new WebPageWidget(this);
-        webview->setTextSizeMultiplier(1.5);
+        webview->setTextSizeMultiplier(1.25);
         webview->load(this->rhandler->LoginPage());
         this->ui->stackedWidget->addWidget(webview);
         connect(webview, SIGNAL(UpdateWindow(QRect)), this, SIGNAL(UpdateWindow(QRect)));
