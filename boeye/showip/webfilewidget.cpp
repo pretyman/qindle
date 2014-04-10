@@ -23,7 +23,7 @@ void WebFileWidget::connectHandler(resthandler *handler)
     connect(this, SIGNAL(itemActivated(QTreeWidgetItem*,int)), SLOT(itemSelect(QTreeWidgetItem*,int)));
     connect(rhandler, SIGNAL(ProcessComplete()), this, SLOT(getChildItem()));
 
-    QShortcut *shortcut = new QShortcut(QKeySequence("F6"), this);
+    QShortcut *shortcut = new QShortcut(QKeySequence("F9"), this);
     connect(shortcut, SIGNAL(activated()), this, SLOT(ShowMenu()));
 
     emit(getFolderContent(QDir()));

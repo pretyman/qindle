@@ -43,6 +43,7 @@ private:
     int CreateFile(QDir path);
     QString getSyncOperation(QString path, QString size);
     void AppendLocalList(QString path, QStringList remotelist, QStringList* finallist);
+    void RemovePath(QString path);
 
 };
 

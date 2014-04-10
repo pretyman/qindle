@@ -73,8 +73,7 @@ int resthandler::ProcessFile(QString path, int mode)
             QDir root(DISK_ROOT_PATH);
             root.remove(path);
         } else if(mode == 4) {
-            QDir root(DISK_ROOT_PATH);
-            root.rmpath(path);
+            this->RemovePath(path);
 
         }
         emit(ProcessComplete());
@@ -178,6 +177,22 @@ void resthandler::AppendLocalList(QString path, QStringList remotelist, QStringL
         }
 
     }
+}
+
+void resthandler::RemovePath(QString path)
+{
+    QDir root(DISK_ROOT_PATH);
+    QDir currentpath = QDir(root.absoluteFilePath(path));
+    QFileInfoList filelist = currentpath.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
+    while(!filelist.isEmpty()) {
+        QFileInfo file = filelist.takeFirst();
+        if(file.isFile()) {
+            root.remove(file.filePath());
+        }else if(file.isDir()) {
+            this->RemovePath(file.filePath());
+        }
+    }
+    root.rmpath(currentpath.path());
 }
 
 void resthandler::getURL(QUrl url)
