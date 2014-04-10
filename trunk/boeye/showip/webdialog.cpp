@@ -4,6 +4,9 @@
 #include <QUrl>
 #include <QTreeWidgetItem>
 #include <QLabel>
+#include <QKeyEvent>
+#include <QtWebKit/QWebFrame>
+#include <QtWebKit/QWebElement>
 
 webDialog::webDialog(QWidget *parent) :
     QDialog(parent),
@@ -52,13 +55,15 @@ void webDialog::showWeb()
         filelist = 0;
     }
     if(!this->webview) {
-        webview = new QWebView(this);
+        webview = new WebPageWidget(this);
+        webview->setTextSizeMultiplier(1.5);
         webview->load(this->rhandler->LoginPage());
         this->ui->stackedWidget->addWidget(webview);
+        connect(webview, SIGNAL(UpdateWindow(QRect)), this, SIGNAL(UpdateWindow(QRect)));
         connect(webview, SIGNAL(urlChanged(QUrl)), rhandler, SLOT(getURL(QUrl)));
+        connect(webview, SIGNAL(loadFinished(bool)), this, SLOT(WebPageFinished()));
     }
     webview->setFocus();
-
 }
 
 void webDialog::FileNotFound()
@@ -66,5 +71,17 @@ void webDialog::FileNotFound()
     QLabel *label = new QLabel(this);
     label->setText("Please go to My App Data->booksync folder and add your books.\n If the folders do not exist, you may need to create them.");
     this->ui->stackedWidget->setCurrentIndex(this->ui->stackedWidget->addWidget(label));
+}
+
+void webDialog::WebPageFinished()
+{
+    QWebElement el = webview->page()->currentFrame()->findFirstElement("input");
+        if (!el.isNull()) {
+            el.setFocus();
+        }
+    QKeyEvent *forwardTab = new QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier);
+    QKeyEvent *backwardTab = new QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::ShiftModifier);
+    QCoreApplication::postEvent(webview, forwardTab);
+    QCoreApplication::postEvent(webview, backwardTab);
 }
 
