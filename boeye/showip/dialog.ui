@@ -10,8 +10,13 @@
     <height>308</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>文泉驿正黑</family>
+   </font>
+  </property>
   <property name="windowTitle">
-   <string>ShowIP</string>
+   <string>BookSync</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -58,12 +63,17 @@
    <item>
     <widget class="QLabel" name="label_3">
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;网盘传输：点击下方“打开”按钮连接百度网盘服务。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;网盘传输：按“确定”键连接百度网盘服务。&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;按“返回”键退出程序。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="font">
+      <font>
+       <family>文泉驿正黑</family>
+      </font>
+     </property>
      <property name="standardButtons">
       <set>QDialogButtonBox::Close|QDialogButtonBox::Open</set>
      </property>

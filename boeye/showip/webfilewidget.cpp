@@ -7,10 +7,10 @@ WebFileWidget::WebFileWidget(QWidget *parent) :
     QTreeWidget(parent)
 {
     QStringList labels;
-    labels.append("Name");
-    labels.append("Size");
-    labels.append("Operation");
-    labels.append("Selection");
+    labels.append(QString::fromUtf8("文件名"));
+    labels.append(QString::fromUtf8("大小"));
+    labels.append(QString::fromUtf8("操作"));
+    labels.append(QString::fromUtf8("是否选择"));
     this->setHeaderLabels(labels);
     this->DownloadingItem = 0;
 }
@@ -20,11 +20,12 @@ void WebFileWidget::connectHandler(resthandler *handler)
     this->rhandler = handler;
     connect(this, SIGNAL(getFolderContent(QDir)), rhandler, SLOT(getFileList(QDir)));
     connect(rhandler, SIGNAL(gotFileList(QStringList*)), this, SLOT(setFolderContent(QStringList*)));
-    connect(this, SIGNAL(itemActivated(QTreeWidgetItem*,int)), SLOT(itemSelect(QTreeWidgetItem*,int)));
     connect(rhandler, SIGNAL(ProcessComplete()), this, SLOT(getChildItem()));
 
     QShortcut *shortcut = new QShortcut(QKeySequence("F9"), this);
     connect(shortcut, SIGNAL(activated()), this, SLOT(ShowMenu()));
+    shortcut = new QShortcut(QKeySequence("Return"), this);
+    connect(shortcut, SIGNAL(activated()), this, SLOT(itemSelect()));
 
     emit(getFolderContent(QDir()));
 }
@@ -84,8 +85,9 @@ void WebFileWidget::itemExpand(QTreeWidgetItem *item)
     }
 }
 
-void WebFileWidget::itemSelect(QTreeWidgetItem *item, int)
+void WebFileWidget::itemSelect()
 {
+    QTreeWidgetItem *item = this->currentItem();
     if(item->checkState(3) == Qt::Unchecked) {
         this->itemCheckState(item, Qt::Checked);
     } else {
@@ -107,7 +109,7 @@ void WebFileWidget::itemDownload(QTreeWidgetItem *item)
         if(item->text(1) == "") {
             rhandler->ProcessFile(path, 2);
         } else {
-            item->setText(2, "Downloading");
+            this->timer->start(2000);
             rhandler->ProcessFile(path, 1);
         }
     } else if(item->text(2) == "Delete") {
@@ -138,10 +140,10 @@ void WebFileWidget::ShowMenu()
      QTreeWidgetItem *item = this->currentItem();
      QPoint point = this->visualItemRect(item).bottomLeft();
      connect(&menu, SIGNAL(hovered(QAction*)), this, SLOT(UpdateMenu(QAction*)));
-     menu.addAction("Select All", this, SLOT(SelectAll()));
-     menu.addAction("Select None", this, SLOT(SelectNone()));
-     menu.addAction("Sync Selected", this, SLOT(ProcessSelected()));
-     menu.addAction("Stop Download", this, SLOT(StopDownload()));
+     menu.addAction(QString::fromUtf8("全选"), this, SLOT(SelectAll()));
+     menu.addAction(QString::fromUtf8("取消选择"), this, SLOT(SelectNone()));
+     menu.addAction(QString::fromUtf8("开始传输"), this, SLOT(ProcessSelected()));
+     menu.addAction(QString::fromUtf8("停止传输"), this, SLOT(StopDownload()));
      menu.exec(this->mapToGlobal(point));
 }
 
@@ -159,6 +161,16 @@ void WebFileWidget::SelectNone()
     for(i=0;i<this->topLevelItemCount();i++) {
         this->itemCheckState(this->topLevelItem(i), Qt::Unchecked);
     }
+}
+
+void WebFileWidget::DownloadProgress()
+{
+    int totalsize = this->DownloadingItem->text(1).toInt();
+    int currentsize = rhandler->getDownloadPos();
+    float percent = (float(currentsize) / float(totalsize)) * 100;
+    QString string = "Downloading(" + QString().setNum(percent, 'g', 2) + "%)";
+    this->DownloadingItem->setText(2, string);
+    this->resizeColumnToContents(2);
 }
 
 void WebFileWidget::getChildItem()
@@ -180,10 +192,12 @@ void WebFileWidget::ProcessSelected()
 {
     if(this->DownloadingItem) {
         this->DownloadingItem->setText(2, "Finished");
-
+        this->timer->stop();
     } else {
         this->DownloadingItem = this->currentItem();
         connect(rhandler, SIGNAL(ProcessComplete()), this, SLOT(ProcessSelected()));
+        this->timer = new QTimer(this);
+        connect(timer, SIGNAL(timeout()), this, SLOT(DownloadProgress()));
     }
     QTreeWidgetItemIterator it(this);
     while (*it) {
@@ -200,6 +214,7 @@ void WebFileWidget::ProcessSelected()
     }
     this->DownloadingItem = 0;
     disconnect(rhandler, SIGNAL(ProcessComplete()), this, SLOT(ProcessSelected()));
+    delete this->timer;
 }
 
 void WebFileWidget::StopDownload()

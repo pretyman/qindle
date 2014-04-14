@@ -13,6 +13,7 @@ resthandler::resthandler(QObject *parent) :
 {
     this->settings = new QSettings(ORG_NAME, APP_NAME, this);
     this->manager = new QNetworkAccessManager(this);
+    downloadfile = 0;
 }
 
 resthandler::~resthandler()
@@ -81,6 +82,15 @@ int resthandler::ProcessFile(QString path, int mode)
     return 1;
 }
 
+int resthandler::getDownloadPos()
+{
+    if(downloadfile) {
+        return downloadfile->pos();
+    } else {
+        return 0;
+    }
+}
+
 void resthandler::getFileList(QDir path)
 {
     QDir abspath(APP_ROOT_PATH);
@@ -111,6 +121,7 @@ void resthandler::FileFinished()
     } else {
         downloadfile->close();
         delete downloadfile;
+        downloadfile = 0;
         downloadreply->close();
         downloadreply->deleteLater();
         emit(ProcessComplete());

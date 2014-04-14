@@ -3,7 +3,9 @@
 
 #include <QTreeWidget>
 #include <QPaintEvent>
+#include <QKeyEvent>
 #include <QRect>
+#include <QTimer>
 #include "resthandler.h"
 
 class WebFileWidget : public QTreeWidget
@@ -28,14 +30,16 @@ public slots:
     void UpdateMenu(QAction *action);
 
 private slots:
-    void itemSelect(QTreeWidgetItem * item, int);
+    void itemSelect();
     void ShowMenu();
     void SelectAll();
     void SelectNone();
+    void DownloadProgress();
 
 private:
     resthandler *rhandler;
     QTreeWidgetItem *DownloadingItem;
+    QTimer *timer;
     void itemCheckState(QTreeWidgetItem *item, Qt::CheckState state);
     void itemExpand(QTreeWidgetItem *item);
     void itemDownload(QTreeWidgetItem *item);

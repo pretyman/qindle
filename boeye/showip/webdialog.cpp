@@ -69,7 +69,7 @@ void webDialog::showWeb()
 void webDialog::FileNotFound()
 {
     QLabel *label = new QLabel(this);
-    label->setText("Please go to My App Data->booksync folder and add your books.\n If the folders do not exist, you may need to create them.");
+    label->setText(QString::fromUtf8("关联成功。\n请进入网盘，在“我的应用数据”下创建“booksync”文件夹，并在其中添加书籍。"));
     this->ui->stackedWidget->setCurrentIndex(this->ui->stackedWidget->addWidget(label));
 }
 

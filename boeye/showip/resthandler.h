@@ -19,6 +19,7 @@ public:
     int getToken();
     QUrl LoginPage();
     int ProcessFile(QString path, int mode);
+    int getDownloadPos();
 
 signals:
     void LoginSuccess();

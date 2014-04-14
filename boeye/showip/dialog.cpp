@@ -47,11 +47,6 @@ void Dialog::paintEvent(QPaintEvent *event)
 
 }
 
-//void Dialog::keyPressEvent(QKeyEvent * event)
-//{
-//    qDebug() << QKeySequence(event->key()).toString();
-//}
-
 void Dialog::on_buttonBox_accepted()
 {
     webDialog* download = new webDialog(this);
