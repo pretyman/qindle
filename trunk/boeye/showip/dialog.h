@@ -3,7 +3,6 @@
 
 #include <QDialog>
 #include <QPaintEvent>
-#include <QKeyEvent>
 #include <QRect>
 #include "fbupdate.h"
 #include "webdialog.h"
@@ -25,7 +24,6 @@ signals:
 
 protected:
     void paintEvent(QPaintEvent *event);
-//    void keyPressEvent(QKeyEvent *event);
 
 private slots:
     void on_buttonBox_accepted();
